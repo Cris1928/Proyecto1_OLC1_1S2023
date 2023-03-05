@@ -1,0 +1,96 @@
+package Analizadores;
+import java_cup.runtime.*;
+import java.util.LinkedList;
+import Error_.Errores;
+import Arbol.Nodo;
+
+parser code
+{:
+
+
+    public static LinkedList<Errores> errores  = new LinkedList<Errores>();
+    public static Nodo raiz;
+    public Nodo getRaiz(){
+        return raiz;
+    }
+
+
+    public void syntax_error(Symbol s)
+    {
+        System.out.println("Error de sintaxis en la linea " + (s.left+1) + ", columna " + (s.right+1) + ". No se esperaba " + s.value);
+        Errores tmp = new Errores("Error Sintactico recuperable: \"" + s.value + "\"" , "Sintactico recuperable", (s.right) + 1, (s.left) + 1);
+        errores.add(tmp);
+    }
+
+
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception
+    {
+        System.out.println("Error de sintaxis en la linea " + (s.left+1) + ", columna " + (s.right+1) + ". No se esperaba " + s.value );
+        Errores tmp = new Errores("Error Sintactico no recuperable: \"" + s.value + "\"" , "Sintactico no recuperable", (s.right) + 1, (s.left) + 1);
+        errores.add(tmp);
+    }
+ 
+:}
+terminal String PR_CONJ, MAYOR, LR_DOS_PUNTOS, LR_GUIUION, LR_COMA, LR_PUNTO, LR_PUNTO_COMA, LR_LLAVE_IZQ, LR_LLAVE_DER, LR_DISYUNCION, LR_CERRADURA_KLEENE;
+terminal String LR_CERRADURA_POSITIVA, LR_CERRADURA_INTERROGACION, PORCENTAJE, SEPARADOR, LETRA_MINUSCULA, LETRA_MAYUSCULA, NUMERO, CARACTER_ESPECIAL, ID, SR;
+
+
+non terminal Cod;
+non terminal declaraciones;
+non terminal declaracion;
+non terminal instrucciones;
+non terminal instruccion;
+non terminal notacion1;
+non terminal notaciones;
+non terminal notacion2;
+non terminal ER;
+
+
+start with Cod;
+
+Cod::= LR_LLAVE_IZQ declaraciones PORCENTAJE PORCENTAJE instrucciones LR_LLAVE_DER;
+
+
+declaraciones::= declaraciones declaracion 
+                | declaracion;
+
+
+
+declaracion::=PR_CONJ LR_DOS_PUNTOS ID:a LR_GUIUION CARACTER_ESPECIAL notacion1:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:}
+            |ID:b LR_GUIUION CARACTER_ESPECIAL ER:a LR_PUNTO_COMA {:{System.out.println("Declaracion de ER: " + b + "=" + a);};:}
+            |PR_CONJ LR_DOS_PUNTOS ID:a LR_GUIUION CARACTER_ESPECIAL notaciones:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:}
+            |error LR_PUNTO_COMA;
+            
+
+notacion1::= LETRA_MAYUSCULA:a SEPARADOR LETRA_MAYUSCULA:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:} 
+    | LETRA_MINUSCULA:a SEPARADOR LETRA_MINUSCULA:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:}
+    | CARACTER_ESPECIAL:a SEPARADOR CARACTER_ESPECIAL:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:}
+    | NUMERO:a SEPARADOR NUMERO:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:};
+
+notaciones::= notaciones:a LR_COMA notacion2:b {:{System.out.println("Notaciones: " + a + " , " + b);};:}
+    | notacion2:a {:{System.out.println("Notaciones: " + a);};:};
+
+
+notacion2::= LETRA_MAYUSCULA:a {:{System.out.println("Notacion 2: " + a);};:}
+    | LETRA_MINUSCULA:a {:{System.out.println("Notacion 2: " + a);};:}
+    | CARACTER_ESPECIAL:a {:{System.out.println("Notacion 2: " + a);};:}
+    | NUMERO:a {:{System.out.println("Notacion 2: " + a);};:};
+
+
+
+
+ER::= LR_PUNTO:a ER:b ER:c {:{System.out.println("ER: " + a + " " + b + " " + c);};:}
+    | LR_DISYUNCION:a ER:b ER:c {:{System.out.println("ER: " + a + "ER: "+ b +"ER: " +c);};:}
+    | LR_CERRADURA_KLEENE:a ER:b {:{System.out.println("ER: " + a + " " + b);};:}
+    | LR_CERRADURA_POSITIVA:a ER:b {:{System.out.println("ER: " + a + " " + b);};:}
+    | LR_CERRADURA_INTERROGACION:a ER:b {:{System.out.println("ER: " + a + " " + b);};:}
+    | LR_LLAVE_IZQ ID:a LR_LLAVE_DER {:{System.out.println("ER: " + a);};:}
+    | SR:a {:{System.out.println("ER_sint: " + a);};:};
+
+ 
+
+instrucciones::= instrucciones instruccion 
+                |instruccion;
+                
+instruccion::= ID:a LR_DOS_PUNTOS SR:b LR_PUNTO_COMA {:System.out.println("Instruccion: " + a + "=" + b);:};

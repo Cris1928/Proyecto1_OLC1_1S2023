@@ -1,0 +1,93 @@
+   if (jTextArea1.getText() != null) {
+
+            try {
+                Boolean Errores = false;
+
+                String text2 = (String) jTextArea1.getText();
+                A_lex lexico = new A_lex (new StringReader(text2));
+                a_sintactico sintactico = new a_sintactico(lexico);
+                sintactico.parse();
+
+                if (lexico.errores.size() > 0 || sintactico.errores.size() > 0) {
+                    if (lexico.errores.size() > 0) {
+                        System.out.println("--------------ERRORES LEXICOS------------");
+                        for (Errores errore : lexico.errores) {
+                            System.out.println(errore.toString());
+                        }
+                    }
+                    if (sintactico.errores.size() > 0) {
+                        System.out.println("------------------ERRORES SINTACTICOS------------------");
+                        for (Errores errore : sintactico.errores) {
+                            System.out.println(errore.toString());
+                        }
+                    }
+                    Errores = true;
+                } else {
+                    System.out.println("No se detectaron errores..");
+                    Errores = false;
+                }
+                System.out.println("Generando reporte de errores....");
+                reporte.GenerarReporte(lexico.errores, sintactico.errores);
+                // incluuir aca reporte de errores
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Ocurrio un error.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No se detecto ningun texto, cargue un archivo o escriba en el area de texto.");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+        String code = jTextArea1.getText();
+        try{
+            A_lex scanner = new A_lex(new java.io.StringReader(code));
+            a_sintactico analizador = new a_sintactico(scanner);
+            analizador.parse();
+            JOptionPane.showMessageDialog(null, "Analisis realizado con exito");
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, "Error en el analisis");
+            
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
