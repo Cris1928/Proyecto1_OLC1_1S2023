@@ -9,6 +9,7 @@ package Analizadores;
 public class sym {
   /* terminals */
   public static final int CARACTER_ESPECIAL = 20;
+  public static final int SRR = 23;
   public static final int LR_CERRADURA_KLEENE = 12;
   public static final int LR_DISYUNCION = 11;
   public static final int LR_LLAVE_IZQ = 9;
@@ -54,7 +55,8 @@ public class sym {
   "NUMERO",
   "CARACTER_ESPECIAL",
   "ID",
-  "SR"
+  "SR",
+  "SRR"
   };
 }
 

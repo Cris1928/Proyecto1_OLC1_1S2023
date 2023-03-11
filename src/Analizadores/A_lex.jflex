@@ -42,7 +42,7 @@ LR_DISYUNCION="|"
 LR_CERRADURA_KLEENE="*"
 LR_CERRADURA_POSITIVA="+"
 LR_CERRADURA_INTERROGACION="?"
-PORCENTAJE="%"
+PORCENTAJE="%%"
 SEPARADOR="~"
 
 
@@ -50,23 +50,23 @@ SEPARADOR="~"
 FINLINEA=\r|\n|\r\n
 ESPACIOS = [ \r\n]+ 
 CARACTER_ENTRADA = [^\r\n]
-COMENTARIO_M="<!"({CARACTER_ENTRADA}|{FINLINEA})*"!>"
+COMENTARIO_M="<!" [^/]~ "!>"
 COMENTARIO_L="//" {CARACTER_ENTRADA}* {FINLINEA}?
 LETRA_MINUSCULA=[a-z]
 LETRA_MAYUSCULA=[A-Z]
 NUMERO=[0-9]
 
+
 ENTR=[^\r\n\"]
 SL=[\\']
 SLL=[\\n]
 SLLL=[\\]
-SLLLL=[\"]*
+SLLLL=[\"]
 CARACTER_ESPECIAL=[ -/:-@\[-`{-}]
 ID=[a-zA-Z_][a-zA-Z0-9_]+
 
-SR=\"({ENTR}|{ESPACIOS}|{SL}|{SLLL}{SLLLL})+\"
-
-
+SR=\"({ENTR}|{ESPACIOS}|{SL}|{SLLL}{SLLLL}|{SLL})+\"
+SRR=({SL}|{SLLL}{SLLLL}|{SLL})+
 %%
 
 <YYINITIAL> {COMENTARIO_L} { }
@@ -95,7 +95,7 @@ SR=\"({ENTR}|{ESPACIOS}|{SL}|{SLLL}{SLLLL})+\"
 <YYINITIAL> {CARACTER_ESPECIAL} {System.out.println("CARACTER_ESPECIAL: "+yytext()); return new Symbol(sym.CARACTER_ESPECIAL, yyline, yycolumn, yytext());}
 <YYINITIAL> {MAYOR} {System.out.println("MAYOR: "+yytext()); return new Symbol(sym.MAYOR, yyline, yycolumn, yytext());}
 <YYINITIAL> {SR} {System.out.println("SR: "+yytext()); return new Symbol(sym.SR, yyline, yycolumn, yytext());}
-
+<YYINITIAL> {SRR} {System.out.println("SRR: "+yytext()); return new Symbol(sym.SRR, yyline, yycolumn, yytext());}
 
 <YYINITIAL>  . {
     System.out.println("Este es un error lexico: "+yytext()+", en la linea: "+yyline+", en la columna: "+yycolumn);

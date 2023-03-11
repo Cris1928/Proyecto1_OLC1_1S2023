@@ -78,16 +78,641 @@
             JOptionPane.showMessageDialog(null, "Error en el analisis");
             
         }
+---------------------------------------------------------------------------------------------------------------------------------------------
+MAYOR=">"
+PR_CONJ="CONJ"
+LR_DOS_PUNTOS=":"
+LR_GUIUION="-"
+LR_COMA=","
+LR_PUNTO="."
+LR_PUNTO_COMA=";"
+LR_LLAVE_IZQ="{"
+LR_LLAVE_DER="}"
+LR_DISYUNCION="|"
+LR_CERRADURA_KLEENE="*"
+LR_CERRADURA_POSITIVA="+"
+LR_CERRADURA_INTERROGACION="?"
+PORCENTAJE="%%"
+SEPARADOR="~"
+
+
+
+FINLINEA=\r|\n|\r\n
+ESPACIOS = [ \r\n]+ 
+CARACTER_ENTRADA = [^\r\n]
+COMENTARIO_M="<!"({CARACTER_ENTRADA}|{FINLINEA})*"!>"
+COMENTARIO_L="//" {CARACTER_ENTRADA}* {FINLINEA}?
+LETRA_MINUSCULA=[a-z]
+LETRA_MAYUSCULA=[A-Z]
+NUMERO=[0-9]
+
+
+---------------------------------------------------- por si tengo que hacer otro .cup-------------------------------------------------------------
+package Analizadores;
+import java_cup.runtime.*;
+import java.util.LinkedList;
+import Error_.Errores;
+import Arbol.Nodo;
+
+parser code
+{:
+
+
+    public static LinkedList<Errores> errores  = new LinkedList<Errores>();
+    public static Nodo raiz;
+    public Nodo getRaiz(){
+        return raiz;
+    }
+
+
+    public void syntax_error(Symbol s)
+    {
+        System.out.println("Error de sintaxis en la linea " + (s.left+1) + ", columna " + (s.right+1) + ". No se esperaba " + s.value);
+        Errores tmp = new Errores("Error Sintactico recuperable: \"" + s.value + "\"" , "Sintactico recuperable", (s.right) + 1, (s.left) + 1);
+        errores.add(tmp);
+    }
+
+
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception
+    {
+        System.out.println("Error de sintaxis en la linea " + (s.left+1) + ", columna " + (s.right+1) + ". No se esperaba " + s.value );
+        Errores tmp = new Errores("Error Sintactico no recuperable: \"" + s.value + "\"" , "Sintactico no recuperable", (s.right) + 1, (s.left) + 1);
+        errores.add(tmp);
+    }
+ 
+:}
+terminal String PR_CONJ, MAYOR, LR_DOS_PUNTOS, LR_GUIUION, LR_COMA, LR_PUNTO, LR_PUNTO_COMA, LR_LLAVE_IZQ, LR_LLAVE_DER, LR_DISYUNCION, LR_CERRADURA_KLEENE;
+terminal String LR_CERRADURA_POSITIVA, LR_CERRADURA_INTERROGACION, PORCENTAJE, SEPARADOR, LETRA_MINUSCULA, LETRA_MAYUSCULA, NUMERO, CARACTER_ESPECIAL, ID, SR;
+
+
+non terminal Cod;
+non terminal declaraciones;
+non terminal declaracion;
+non terminal instrucciones;
+non terminal instruccion;
+non terminal notacion1;
+non terminal notaciones;
+non terminal notacion2;
+non terminal ER;
+
+
+start with Cod;
+
+Cod::= LR_LLAVE_IZQ declaraciones PORCENTAJE PORCENTAJE instrucciones LR_LLAVE_DER         {: Nodo padre = new Nodo("inicio", "", 0,0);
+                                                                                             :} 
+;
+
+
+declaraciones::= declaraciones declaracion 
+                | declaracion;
+
+
+
+declaracion::=PR_CONJ LR_DOS_PUNTOS ID:a LR_GUIUION CARACTER_ESPECIAL notacion1:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:}
+            |ID:b LR_GUIUION CARACTER_ESPECIAL ER:a LR_PUNTO_COMA {:{System.out.println("Declaracion de ER: " + b + "=" + a);};:}
+            |PR_CONJ LR_DOS_PUNTOS ID:a LR_GUIUION CARACTER_ESPECIAL notaciones:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:}
+            |error LR_PUNTO_COMA;
+            
+
+notacion1::= LETRA_MAYUSCULA:a SEPARADOR LETRA_MAYUSCULA:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:} 
+    | LETRA_MINUSCULA:a SEPARADOR LETRA_MINUSCULA:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:}
+    | CARACTER_ESPECIAL:a SEPARADOR CARACTER_ESPECIAL:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:}
+    | NUMERO:a SEPARADOR NUMERO:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:};
+
+notaciones::= notaciones:a LR_COMA notacion2:b {:{System.out.println("Notaciones: " + a + " , " + b);};:}
+    | notacion2:a {:{System.out.println("Notaciones: " + a);};:};
+
+
+notacion2::= LETRA_MAYUSCULA:a {:{System.out.println("Notacion 2: " + a);};:}
+    | LETRA_MINUSCULA:a {:{System.out.println("Notacion 2: " + a);};:}
+    | CARACTER_ESPECIAL:a {:{System.out.println("Notacion 2: " + a);};:}
+    | NUMERO:a {:{System.out.println("Notacion 2: " + a);};:};
+
+
+
+
+ER::= LR_PUNTO:a ER:b ER:c {:{System.out.println("ER: " + a + " " + b + " " + c);};:}
+    | LR_DISYUNCION:a ER:b ER:c {:{System.out.println("ER: " + a + "ER: "+ b +"ER: " +c);};:}
+    | LR_CERRADURA_KLEENE:a ER:b {:{System.out.println("ER: " + a + " " + b);};:}
+    | LR_CERRADURA_POSITIVA:a ER:b {:{System.out.println("ER: " + a + " " + b);};:}
+    | LR_CERRADURA_INTERROGACION:a ER:b {:{System.out.println("ER: " + a + " " + b);};:}
+    | LR_LLAVE_IZQ ID:a LR_LLAVE_DER {:{System.out.println("ER: " + a);};:}
+    | SR:a {:{System.out.println("ER_sint: " + a);};:};
+
+ 
+
+instrucciones::= instrucciones instruccion 
+                |instruccion;
+                
+instruccion::= ID:a LR_DOS_PUNTOS SR:b LR_PUNTO_COMA {:System.out.println("Instruccion: " + a + "=" + b);:};
+
+
+
+
+
+---------------------------------------- DOT AUTO---------------------------------------------------
+
+    public void graficar(String cadena) {
+        try {
+            File archivo = new File("ArbolSintactico.dot");
+            FileWriter fw = new FileWriter(archivo);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter pw = new PrintWriter(bw);
+            pw.write(cadena);
+            pw.close();
+            bw.close();
+            String cmd = "dot -Tpng ArbolSintactico.dot -o ArbolSintactico.png";
+            Runtime.getRuntime().exec(cmd);
+            File imgPath = new File("ArbolSintactico.png");
+            Desktop.getDesktop().open(imgPath);
+        } catch (IOException e) {
+            System.out.println("Error al generar el archivo");
+        }
+    }
+
+
+
+
+------------------------------------------------------------------- Arbol con izquierda y derecha ....................................
+package Arbol;
+import java.io.File;
+import java.awt.Desktop;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+
+public class Arbol {
+    
+    public Nodo raiz;
+
+    public Arbol(Nodo raiz) {
+        this.raiz = raiz;
+    }
+    public Nodo getRaiz(){
+        return raiz;
+    }
+    public void GraficarSintactico() {
+        String grafica = "Digraph Arbol_Sintactico{\n\n" + GraficaNodos(this.raiz, "0") + "\n\n}";
+        //System.out.println(grafica);
+        //GenerarDot(grafica);
+        GenerarDot(grafica);
+    }
+
+    public String GraficaNodos(Nodo nodo, String id) {
+        String cadena = "";
+        if (nodo != null) {
+            cadena += "nodo" + id + "[label=\"" + nodo.token + "\"];\n";
+            if (nodo.izquierda != null) {
+                for (int i = 0; i < nodo.izquierda.size(); i++) {
+                    System.out.println("muestra que si hace");
+                    cadena += "nodo" + id + "->nodo" + id + "i" + i + ";\n";
+                    cadena += GraficaNodos(nodo.izquierda.get(i), id + "i" + i);
+                }
+            }
+            if (nodo.derecha != null) {
+                for (int i = 0; i < nodo.derecha.size(); i++) {
+                    System.out.println("muestra que si hace");
+                    cadena += "nodo" + id + "->nodo" + id + "d" + i + ";\n";
+                    cadena += GraficaNodos(nodo.derecha.get(i), id + "d" + i);
+                }
+            }
+            if (nodo.hoja != null) {
+                for (int i = 0; i < nodo.hoja.size(); i++) {
+                    System.out.println("muestra que si hace");
+                    cadena += "nodo" + id + "->nodo" + id + "h" + i + ";\n";
+                    cadena += GraficaNodos(nodo.hoja.get(i), id + "h" + i);
+                }
+            }
+        }
+        return cadena;
+    }
+
+    private void GenerarDot(String cadena){
+        FileWriter fichero = null;
+        try {
+            fichero = new FileWriter("c:\\OLC1\\prueba.dot");
+            PrintWriter pw = null;
+            pw = new PrintWriter(fichero);
+            System.out.println(cadena);
+            pw.println(cadena);
+            pw.close();
+            try {
+
+                ProcessBuilder proceso;
+                proceso = new ProcessBuilder("dot", "-Tjpg", "-o", "prueba.jpg", "C:\\OLC1\\prueba.dot");
+                proceso.start();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (null != fichero) {
+                    fichero.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        } }
+
+    public void graficar(String cadena) {
+
+        StringBuilder dot = new StringBuilder();
+        dot.append(cadena);
+
+        try {
+
+            File file = new File("GrafoAST.dot");
+            FileWriter fw = new FileWriter(file);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(dot.toString());
+            bw.close();
+            ProcessBuilder pbuilder = new ProcessBuilder("dot", "-Tsvg", "-o", "Arbol_Sintactico.svg", "GrafoAST.dot");
+            pbuilder.redirectErrorStream(true);
+            System.out.println("Terminando...");
+            pbuilder.start();
+
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        System.out.println("Arbol sintactico graficado.");
+    }
+}
+
+
+----------------------- Nodo con izqierda y derecha-----------------------------------------------------------------------------------------
+package Arbol;
+
+import java.util.ArrayList;
+
+/**
+ *
+ * @author kriti
+ */
+public class Nodo {
+    public String token;
+    public int linea;
+    public int column;
+
+    public ArrayList<Nodo> izquierda = new ArrayList<Nodo>();
+    public ArrayList<Nodo> derecha = new ArrayList<Nodo>();
+    public ArrayList<Nodo> hoja = new ArrayList<Nodo>();
+
+public Nodo(String token, int linea, int column){
+    this.token = token;
+    this.linea = linea;
+    this.column = column;
+
+    this.izquierda= new ArrayList<Nodo>();
+    this.derecha= new ArrayList<Nodo>();
+    this.hoja= new ArrayList<Nodo>();
+}
+
+public void addIzquierda(Nodo nodo){
+    this.izquierda.add(nodo);
+}
+    public void addDerecha(Nodo nodo){
+        this.derecha.add(nodo);
+    }
+    public void addHoja(Nodo nodo){
+        this.hoja.add(nodo);
+    }
+    
+
+
+}
+
+
+
+--------------------------------------------------------------------- SINTACTICO CON DECLARACIONES APARTE (mI)-------------
+package Analizadores;
+import java_cup.runtime.*;
+import java.util.LinkedList;
+import Error_.Errores;
+import Arbol.Nodo;
+
+parser code
+{:
+    public static Nodo raiz;
+    public Nodo getRaiz(){
+        return raiz;
+    }
+
+    public static LinkedList<Errores> errores  = new LinkedList<Errores>();
+
+    public void syntax_error(Symbol s)
+    {
+        System.out.println("Error de sintaxis en la linea " + (s.left+1) + ", columna " + (s.right+1) + ". No se esperaba " + s.value);
+        Errores tmp = new Errores("Error Sintactico recuperable: \"" + s.value + "\"" , "Sintactico recuperable", (s.right) + 1, (s.left) + 1);
+        errores.add(tmp);
+    }
+
+
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception
+    {
+        System.out.println("Error de sintaxis en la linea " + (s.left+1) + ", columna " + (s.right+1) + ". No se esperaba " + s.value );
+        Errores tmp = new Errores("Error Sintactico no recuperable: \"" + s.value + "\"" , "Sintactico no recuperable", (s.right) + 1, (s.left) + 1);
+        errores.add(tmp);
+    }
+ 
+:}
+terminal String PR_CONJ, MAYOR, LR_DOS_PUNTOS, LR_GUIUION, LR_COMA, LR_PUNTO, LR_PUNTO_COMA, LR_LLAVE_IZQ, LR_LLAVE_DER, LR_DISYUNCION, LR_CERRADURA_KLEENE;
+terminal String LR_CERRADURA_POSITIVA, LR_CERRADURA_INTERROGACION, PORCENTAJE, SEPARADOR, LETRA_MINUSCULA, LETRA_MAYUSCULA, NUMERO, CARACTER_ESPECIAL, ID, SR;
+
+
+non terminal Cod;
+non terminal declaraciones;
+non terminal declaracion;
+non terminal instrucciones;
+non terminal instruccion;
+non terminal notacion1;
+non terminal notaciones;
+non terminal notacion2;
+non terminal ER;
+non terminal declaracionesexp;
+non terminal declaracionexp;
+
+
+
+start with Cod;
+
+Cod::= LR_LLAVE_IZQ declaraciones declaracionesexp:a PORCENTAJE PORCENTAJE instrucciones LR_LLAVE_DER{:
+
+Nodo padre = new Nodo("inicio","#", 0, 0);
+padre.AddHijo(a);
+raiz = padre;
+
+:}
+
+
+;
+
+
+declaraciones::= declaraciones:a declaracion:b {:
+                                                {System.out.println("Declaraciones: " + a + " " + b);};
+                                                :}
+                | declaracion:a {:
+                                                {System.out.println("Declaraciones: " + a);};
+                                    :}
+                ;
+
+
+
+
+
+declaracionesexp::= declaracionesexp:a declaracionexp:b {:
+                                                Nodo padre = new Nodo("declaraciones","", 0, 0);
+                                                padre.AddHijo(a);
+                                                padre.AddHijo(b);
+                                                RESULT = padre;
+                                                :}
+                | declaracionexp:a {:
+                                                 Nodo padre = new Nodo("declaraciones","", 0, 0);
+                                                padre.AddHijo(a);
+                                                RESULT = padre;
+                                    :}
+                ;
+
+
+
+
+declaracion::=PR_CONJ LR_DOS_PUNTOS ID:a LR_GUIUION CARACTER_ESPECIAL notacion1:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:}
+            |PR_CONJ LR_DOS_PUNTOS ID:a LR_GUIUION CARACTER_ESPECIAL notaciones:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:};
+            
+declaracionexp::=ID:b LR_GUIUION CARACTER_ESPECIAL ER:a LR_PUNTO_COMA {:{System.out.println("Declaracion de ER: " + b + "=" + a);};
+
+            Nodo padre = new Nodo("expresion","",0,0);
+            padre.AddHijo(a);
+            RESULT=padre;
+            :}
+            |error LR_PUNTO_COMA;
+            
+
+
+
+notacion1::= LETRA_MAYUSCULA:a SEPARADOR LETRA_MAYUSCULA:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:} 
+    | LETRA_MINUSCULA:a SEPARADOR LETRA_MINUSCULA:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:}
+    | CARACTER_ESPECIAL:a SEPARADOR CARACTER_ESPECIAL:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:}
+    | NUMERO:a SEPARADOR NUMERO:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:};
+
+notaciones::= notaciones:a LR_COMA notacion2:b {:{System.out.println("Notaciones: " + a + " , " + b);};:}
+    | notacion2:a {:{System.out.println("Notaciones: " + a);};:};
+
+
+notacion2::= LETRA_MAYUSCULA:a {:{System.out.println("Notacion 2: " + a);};:}
+    | LETRA_MINUSCULA:a {:{System.out.println("Notacion 2: " + a);};:}
+    | CARACTER_ESPECIAL:a {:{System.out.println("Notacion 2: " + a);};:}
+    | NUMERO:a {:{System.out.println("Notacion 2: " + a);};:};
+
+
+
+
+ER::= LR_PUNTO:a ER:b ER:c {:{System.out.println("ER: " + a + " " + b + " " + c);};
+Nodo padre = new Nodo(".","",aright,aleft);
+padre.AddHijo(b);
+padre.AddHijo(c);
+RESULT=padre;
+:}
+    | LR_DISYUNCION:a ER:b ER:c {:{System.out.println("ER: " + a + "ER: "+ b +"ER: " +c);};
+    Nodo padre = new Nodo("|","",aright,aleft);
+    padre.AddHijo(b);
+    padre.AddHijo(c);
+    RESULT=padre;
+    :}
+    | LR_CERRADURA_KLEENE:a ER:b {:{System.out.println("ER: " + a + " " + b);};
+    Nodo padre = new Nodo("*","",aleft,aright);
+    padre.AddHijo(b);
+    RESULT=padre;
+    
+    :}
+    | LR_CERRADURA_POSITIVA:a ER:b {:{System.out.println("ER: " + a + " " + b);};
+    Nodo padre = new Nodo("+","",aleft,aright);
+    padre.AddHijo(b);
+    RESULT=padre;
+    :}
+    | LR_CERRADURA_INTERROGACION:a ER:b {:{System.out.println("ER: " + a + " " + b);};
+    Nodo padre = new Nodo("?","",aleft,aright);
+    padre.AddHijo(b);
+    RESULT=padre;
+    :}
+    | LR_LLAVE_IZQ ID:a LR_LLAVE_DER {:{System.out.println("ER: " + a);};
+    Nodo padre = new Nodo(a,"",aright,aleft);
+    RESULT=padre;
+
+    :}
+    | SR:a {:{System.out.println("ER_sint: " + a);};
+    Nodo padre = new Nodo(a,"",aright,aleft);
+    RESULT=padre;
+    :}
+    ;
+
+ 
+
+instrucciones::= instrucciones instruccion 
+                |instruccion;
+                
+instruccion::= ID:a LR_DOS_PUNTOS SR:b LR_PUNTO_COMA {:System.out.println("Instruccion: " + a + "=" + b);:};
 
 
 
 
 
 
+-------------------------------------------------- DECLARACIONES EN MISMO SITIO .------------------------------------------
+
+package Analizadores;
+import java_cup.runtime.*;
+import java.util.LinkedList;
+import Error_.Errores;
+import Arbol.Nodo;
+
+parser code
+{:
+    public static Nodo raiz;
+    public Nodo getRaiz(){
+        return raiz;
+    }
+
+    public static LinkedList<Errores> errores  = new LinkedList<Errores>();
+
+    public void syntax_error(Symbol s)
+    {
+        System.out.println("Error de sintaxis en la linea " + (s.left+1) + ", columna " + (s.right+1) + ". No se esperaba " + s.value);
+        Errores tmp = new Errores("Error Sintactico recuperable: \"" + s.value + "\"" , "Sintactico recuperable", (s.right) + 1, (s.left) + 1);
+        errores.add(tmp);
+    }
+
+
+
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception
+    {
+        System.out.println("Error de sintaxis en la linea " + (s.left+1) + ", columna " + (s.right+1) + ". No se esperaba " + s.value );
+        Errores tmp = new Errores("Error Sintactico no recuperable: \"" + s.value + "\"" , "Sintactico no recuperable", (s.right) + 1, (s.left) + 1);
+        errores.add(tmp);
+    }
+ 
+:}
+terminal String PR_CONJ, MAYOR, LR_DOS_PUNTOS, LR_GUIUION, LR_COMA, LR_PUNTO, LR_PUNTO_COMA, LR_LLAVE_IZQ, LR_LLAVE_DER, LR_DISYUNCION, LR_CERRADURA_KLEENE;
+terminal String LR_CERRADURA_POSITIVA, LR_CERRADURA_INTERROGACION, PORCENTAJE, SEPARADOR, LETRA_MINUSCULA, LETRA_MAYUSCULA, NUMERO, CARACTER_ESPECIAL, ID, SR;
+
+
+non terminal Cod;
+non terminal declaraciones;
+non terminal declaracion;
+non terminal instrucciones;
+non terminal instruccion;
+non terminal notacion1;
+non terminal notaciones;
+non terminal notacion2;
+non terminal ER;
+
+
+
+start with Cod;
+
+Cod::= LR_LLAVE_IZQ declaraciones:a PORCENTAJE PORCENTAJE instrucciones LR_LLAVE_DER{:
+
+Nodo padre = new Nodo("inicio","#", 0, 0);
+padre.AddHijo(a);
+raiz = padre;
+
+:}
+
+
+;
+
+
+declaraciones::= declaraciones:a declaracion:b {:
+                                                Nodo padre = new Nodo("declaraciones","", 0, 0);
+                                                padre.AddHijo(a);
+                                                padre.AddHijo(b);
+                                                RESULT = padre;
+                                                :}
+                | declaracion:a {:
+                                                 Nodo padre = new Nodo("declaraciones","", 0, 0);
+                                                padre.AddHijo(a);
+                                                RESULT = padre;
+                                    :}
+                ;
+
+
+
+declaracion::=PR_CONJ LR_DOS_PUNTOS ID:a LR_GUIUION CARACTER_ESPECIAL notacion1:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:}
+            |ID:b LR_GUIUION CARACTER_ESPECIAL ER:a LR_PUNTO_COMA {:{System.out.println("Declaracion de ER: " + b + "=" + a);};
+
+            Nodo padre = new Nodo("expresion","",0,0);
+            padre.AddHijo(a);
+            RESULT=padre;
+            :}
+            |PR_CONJ LR_DOS_PUNTOS ID:a LR_GUIUION CARACTER_ESPECIAL notaciones:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:}
+            |error LR_PUNTO_COMA;
+            
+
+notacion1::= LETRA_MAYUSCULA:a SEPARADOR LETRA_MAYUSCULA:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:} 
+    | LETRA_MINUSCULA:a SEPARADOR LETRA_MINUSCULA:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:}
+    | CARACTER_ESPECIAL:a SEPARADOR CARACTER_ESPECIAL:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:}
+    | NUMERO:a SEPARADOR NUMERO:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:};
+
+notaciones::= notaciones:a LR_COMA notacion2:b {:{System.out.println("Notaciones: " + a + " , " + b);};:}
+    | notacion2:a {:{System.out.println("Notaciones: " + a);};:};
+
+
+notacion2::= LETRA_MAYUSCULA:a {:{System.out.println("Notacion 2: " + a);};:}
+    | LETRA_MINUSCULA:a {:{System.out.println("Notacion 2: " + a);};:}
+    | CARACTER_ESPECIAL:a {:{System.out.println("Notacion 2: " + a);};:}
+    | NUMERO:a {:{System.out.println("Notacion 2: " + a);};:};
 
 
 
 
+ER::= LR_PUNTO:a ER:b ER:c {:{System.out.println("ER: " + a + " " + b + " " + c);};
+Nodo padre = new Nodo(".","",aright,aleft);
+padre.AddHijo(b);
+padre.AddHijo(c);
+RESULT=padre;
+:}
+    | LR_DISYUNCION:a ER:b ER:c {:{System.out.println("ER: " + a + "ER: "+ b +"ER: " +c);};
+    Nodo padre = new Nodo("|","",aright,aleft);
+    padre.AddHijo(b);
+    padre.AddHijo(c);
+    RESULT=padre;
+    :}
+    | LR_CERRADURA_KLEENE:a ER:b {:{System.out.println("ER: " + a + " " + b);};
+    Nodo padre = new Nodo("*","",aleft,aright);
+    padre.AddHijo(b);
+    RESULT=padre;
+    
+    :}
+    | LR_CERRADURA_POSITIVA:a ER:b {:{System.out.println("ER: " + a + " " + b);};
+    Nodo padre = new Nodo("+","",aleft,aright);
+    padre.AddHijo(b);
+    RESULT=padre;
+    :}
+    | LR_CERRADURA_INTERROGACION:a ER:b {:{System.out.println("ER: " + a + " " + b);};
+    Nodo padre = new Nodo("?","",aleft,aright);
+    padre.AddHijo(b);
+    RESULT=padre;
+    :}
+    | LR_LLAVE_IZQ ID:a LR_LLAVE_DER {:{System.out.println("ER: " + a);};
+    Nodo padre = new Nodo(a,"",aright,aleft);
+    RESULT=padre;
 
+    :}
+    | SR:a {:{System.out.println("ER_sint: " + a);};
+    Nodo padre = new Nodo(a,"",aright,aleft);
+    RESULT=padre;
+    :}
+    ;
 
+ 
 
+instrucciones::= instrucciones instruccion 
+                |instruccion;
+                
+instruccion::= ID:a LR_DOS_PUNTOS SR:b LR_PUNTO_COMA {:System.out.println("Instruccion: " + a + "=" + b);:};

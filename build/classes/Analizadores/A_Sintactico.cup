@@ -6,14 +6,12 @@ import Arbol.Nodo;
 
 parser code
 {:
-
-
-    public static LinkedList<Errores> errores  = new LinkedList<Errores>();
     public static Nodo raiz;
     public Nodo getRaiz(){
         return raiz;
     }
 
+    public static LinkedList<Errores> errores  = new LinkedList<Errores>();
 
     public void syntax_error(Symbol s)
     {
@@ -49,16 +47,35 @@ non terminal ER;
 
 start with Cod;
 
-Cod::= LR_LLAVE_IZQ declaraciones PORCENTAJE PORCENTAJE instrucciones LR_LLAVE_DER;
+Cod::= LR_LLAVE_IZQ declaraciones:a PORCENTAJE PORCENTAJE instrucciones LR_LLAVE_DER{:
+Nodo padre = new Nodo("inicio","", 0, 0);
+padre.AddHijo(a);
+raiz = padre;
+:}
+;
 
 
-declaraciones::= declaraciones declaracion 
-                | declaracion;
+declaraciones::= declaraciones:a declaracion:b {:
+                                                Nodo padre = new Nodo("declaraciones","", 0, 0);
+                                                padre.AddHijo(a);
+                                                padre.AddHijo(b);
+                                                RESULT = padre;
+                                                :}
+                | declaracion:a {:
+                                    Nodo padre = new Nodo("declaraciones","", 0, 0);
+                                    padre.AddHijo(a);
+                                    RESULT = padre;
+                                    :}
+                ;
 
 
 
 declaracion::=PR_CONJ LR_DOS_PUNTOS ID:a LR_GUIUION CARACTER_ESPECIAL notacion1:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:}
-            |ID:b LR_GUIUION CARACTER_ESPECIAL ER:a LR_PUNTO_COMA {:{System.out.println("Declaracion de ER: " + b + "=" + a);};:}
+            |ID:b LR_GUIUION CARACTER_ESPECIAL ER:a LR_PUNTO_COMA {:{System.out.println("Declaracion de ER: " + b + "=" + a);};
+            Nodo padre = new Nodo("expresion","",0,0);
+            padre.AddHijo(a);
+            RESULT=padre;
+            :}
             |PR_CONJ LR_DOS_PUNTOS ID:a LR_GUIUION CARACTER_ESPECIAL notaciones:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:}
             |error LR_PUNTO_COMA;
             
@@ -80,13 +97,56 @@ notacion2::= LETRA_MAYUSCULA:a {:{System.out.println("Notacion 2: " + a);};:}
 
 
 
-ER::= LR_PUNTO:a ER:b ER:c {:{System.out.println("ER: " + a + " " + b + " " + c);};:}
-    | LR_DISYUNCION:a ER:b ER:c {:{System.out.println("ER: " + a + "ER: "+ b +"ER: " +c);};:}
-    | LR_CERRADURA_KLEENE:a ER:b {:{System.out.println("ER: " + a + " " + b);};:}
-    | LR_CERRADURA_POSITIVA:a ER:b {:{System.out.println("ER: " + a + " " + b);};:}
-    | LR_CERRADURA_INTERROGACION:a ER:b {:{System.out.println("ER: " + a + " " + b);};:}
-    | LR_LLAVE_IZQ ID:a LR_LLAVE_DER {:{System.out.println("ER: " + a);};:}
-    | SR:a {:{System.out.println("ER_sint: " + a);};:};
+ER::= LR_PUNTO:a ER:b ER:c {:{System.out.println("ER: " + a + " " + b + " " + c);};
+Nodo padre = new Nodo(".",a,aright,aleft);
+padre.AddHijo(b);
+padre.AddHijo(c);
+RESULT=padre;
+:}
+    | LR_DISYUNCION:a ER:b ER:c {:{System.out.println("ER: " + a + "ER: "+ b +"ER: " +c);};
+    Nodo padre = new Nodo("e","",0,0);
+    Nodo hijo1 = new Nodo("|",a,aright,aleft);
+    padre.AddHijo(hijo1);
+    padre.AddHijo(b);
+    padre.AddHijo(c);
+    RESULT=padre;
+    :}
+    | LR_CERRADURA_KLEENE:a ER:b {:{System.out.println("ER: " + a + " " + b);};
+    Nodo padre = new Nodo("e","",0,0);
+    Nodo hijo1 = new Nodo("*",a,aleft,aright);
+    padre.AddHijo(hijo1);
+    padre.AddHijo(b);
+    RESULT=padre;
+    
+    :}
+    | LR_CERRADURA_POSITIVA:a ER:b {:{System.out.println("ER: " + a + " " + b);};
+    Nodo padre = new Nodo("e","",0,0);
+    Nodo hijo1 = new Nodo("+",a,aleft,aright);
+    padre.AddHijo(hijo1);
+    padre.AddHijo(b);
+    RESULT=padre;
+    :}
+    | LR_CERRADURA_INTERROGACION:a ER:b {:{System.out.println("ER: " + a + " " + b);};
+    Nodo padre = new Nodo("e","",0,0);
+    Nodo hijo1 = new Nodo("?",a,aleft,aright);
+    padre.AddHijo(hijo1);
+    padre.AddHijo(b);
+    RESULT=padre;
+    :}
+    | LR_LLAVE_IZQ ID:a LR_LLAVE_DER {:{System.out.println("ER: " + a);};
+    Nodo padre = new Nodo("e","",0,0);
+    Nodo hijo1 = new Nodo("ID",a,aright,aleft);
+    padre.AddHijo(hijo1);
+    RESULT=padre;
+
+    :}
+    | SR:a {:{System.out.println("ER_sint: " + a);};
+    Nodo padre = new Nodo("e","",0,0);
+    Nodo hijo1 = new Nodo("ER",a,aright,aleft);
+    padre.AddHijo(hijo1);
+    RESULT=padre;
+    :}
+    ;
 
  
 

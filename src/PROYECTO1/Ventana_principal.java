@@ -13,10 +13,16 @@ import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.xml.transform.Source;
 import Analizadores.a_sintactico;
+import Arbol.Arbol;
+import Arbol.Nodo;
 import javax.swing.JOptionPane;
 import Error_.Errores;
 import Error_.reportErrors;
+import java.awt.Desktop;
+import java.io.BufferedReader;
 import java.io.StringReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -176,7 +182,8 @@ e.printStackTrace();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+   
+      //  abrirArchivos("Arbol_Sintactico.svg");
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -214,7 +221,7 @@ e.printStackTrace();
         //SE REALIZO UN CAMBIO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
         reportErrors reporte = new reportErrors();
         
-        
+        Nodo raiz = null;
         
            if (jTextArea1.getText() != null) {
             try {
@@ -241,24 +248,30 @@ e.printStackTrace();
                     Errores = true;
                 } else {
                     System.out.println("No se detectaron errores..");
+              //       raiz =sintactico.getRaiz();
+           
+                         //  if(raiz == null){
+      //          System.out.println("No fue posible generar el arbol de analisis sintactico");
+       //     }else{
+       //         Arbol arbol = new Arbol(raiz);
+         ///       arbol.GraficarSintactico();
+          //  }
                     
                     
                     
                     
                     
                     
-                    
-                    
-                            String code = jTextArea1.getText();
-        try{
-            A_lex scanner = new A_lex(new java.io.StringReader(code));
-            a_sintactico analizador = new a_sintactico(scanner);
-            analizador.parse();
-            JOptionPane.showMessageDialog(null, "Analisis realizado con exito");
-        }catch(Exception ex){
-            JOptionPane.showMessageDialog(null, "Error en el analisis");
+   //                         String code = jTextArea1.getText();
+     //   try{
+       //     A_lex scanner = new A_lex(new java.io.StringReader(code));
+         //   a_sintactico analizador = new a_sintactico(scanner);
+           // analizador.parse();
+       //     JOptionPane.showMessageDialog(null, "Analisis realizado con exito");
+       // }catch(Exception ex){
+         //   JOptionPane.showMessageDialog(null, "Error en el analisis");
             
-        }
+        //}
                     
              
         
@@ -324,7 +337,22 @@ e.printStackTrace();
             }
         });
     }
-
+ private void abrirArchivos(String nombre) {
+        try {
+            File file = new File(nombre);
+            if (!Desktop.isDesktopSupported()) {
+                System.out.println("not supported");
+                return;
+            }
+            Desktop desktop = Desktop.getDesktop();
+            if (file.exists()) {
+                System.out.println("Abriendo archivo.");
+            }
+            desktop.open(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

@@ -3,17 +3,13 @@ import java_cup.runtime.*;
 import java.util.LinkedList;
 import Error_.Errores;
 import Arbol.Nodo;
-
+import Arbol.Token;
+import java.util.ArrayList;
 parser code
 {:
-
+    public ArrayList<Token> arbol = new ArrayList<Token>();
 
     public static LinkedList<Errores> errores  = new LinkedList<Errores>();
-    public static Nodo raiz;
-    public Nodo getRaiz(){
-        return raiz;
-    }
-
 
     public void syntax_error(Symbol s)
     {
@@ -33,8 +29,7 @@ parser code
  
 :}
 terminal String PR_CONJ, MAYOR, LR_DOS_PUNTOS, LR_GUIUION, LR_COMA, LR_PUNTO, LR_PUNTO_COMA, LR_LLAVE_IZQ, LR_LLAVE_DER, LR_DISYUNCION, LR_CERRADURA_KLEENE;
-terminal String LR_CERRADURA_POSITIVA, LR_CERRADURA_INTERROGACION, PORCENTAJE, SEPARADOR, LETRA_MINUSCULA, LETRA_MAYUSCULA, NUMERO, CARACTER_ESPECIAL, ID, SR;
-
+terminal String LR_CERRADURA_POSITIVA, LR_CERRADURA_INTERROGACION, PORCENTAJE, SEPARADOR, LETRA_MINUSCULA, LETRA_MAYUSCULA, NUMERO, CARACTER_ESPECIAL, ID, SR,SRR;
 
 non terminal Cod;
 non terminal declaraciones;
@@ -45,23 +40,58 @@ non terminal notacion1;
 non terminal notaciones;
 non terminal notacion2;
 non terminal ER;
+non terminal declaracionesexp;
+non terminal declaracionexp;
+
 
 
 start with Cod;
 
-Cod::= LR_LLAVE_IZQ declaraciones PORCENTAJE PORCENTAJE instrucciones LR_LLAVE_DER;
+Cod::= LR_LLAVE_IZQ declaraciones declaracionesexp:a PORCENTAJE PORCENTAJE instrucciones LR_LLAVE_DER{:
+    System.out.println("Codigo: " + a);
+
+:}
 
 
-declaraciones::= declaraciones declaracion 
-                | declaracion;
+;
+
+
+declaraciones::= declaraciones:a declaracion:b {:
+                                                {System.out.println("Declaraciones: " + a + " " + b);};
+                                                :}
+                | declaracion:a {:
+                                                {System.out.println("Declaraciones: " + a);};
+                                    :}
+                ;
+
+
+
+
+
+declaracionesexp::= declaracionesexp:a declaracionexp:b {:
+                                                {System.out.println("Declaraciones: " + a + " " + b);};
+
+                                                :}
+                | declaracionexp:a {:
+                                                {System.out.println("Declaraciones: " + a);};
+
+                                    :}
+                ;
+
 
 
 
 declaracion::=PR_CONJ LR_DOS_PUNTOS ID:a LR_GUIUION CARACTER_ESPECIAL notacion1:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:}
-            |ID:b LR_GUIUION CARACTER_ESPECIAL ER:a LR_PUNTO_COMA {:{System.out.println("Declaracion de ER: " + b + "=" + a);};:}
-            |PR_CONJ LR_DOS_PUNTOS ID:a LR_GUIUION CARACTER_ESPECIAL notaciones:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:}
+            |PR_CONJ LR_DOS_PUNTOS ID:a LR_GUIUION CARACTER_ESPECIAL notaciones:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:};
+            
+declaracionexp::=ID:b LR_GUIUION CARACTER_ESPECIAL ER:a LR_PUNTO_COMA {:{System.out.println("Declaracion de ER: " + b + "=" + a);};
+
+            arbol.add(new Token((Nodo) a));
+            :}
             |error LR_PUNTO_COMA;
             
+
+
 
 notacion1::= LETRA_MAYUSCULA:a SEPARADOR LETRA_MAYUSCULA:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:} 
     | LETRA_MINUSCULA:a SEPARADOR LETRA_MINUSCULA:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:}
@@ -80,13 +110,50 @@ notacion2::= LETRA_MAYUSCULA:a {:{System.out.println("Notacion 2: " + a);};:}
 
 
 
-ER::= LR_PUNTO:a ER:b ER:c {:{System.out.println("ER: " + a + " " + b + " " + c);};:}
-    | LR_DISYUNCION:a ER:b ER:c {:{System.out.println("ER: " + a + "ER: "+ b +"ER: " +c);};:}
-    | LR_CERRADURA_KLEENE:a ER:b {:{System.out.println("ER: " + a + " " + b);};:}
-    | LR_CERRADURA_POSITIVA:a ER:b {:{System.out.println("ER: " + a + " " + b);};:}
-    | LR_CERRADURA_INTERROGACION:a ER:b {:{System.out.println("ER: " + a + " " + b);};:}
-    | LR_LLAVE_IZQ ID:a LR_LLAVE_DER {:{System.out.println("ER: " + a);};:}
-    | SR:a {:{System.out.println("ER_sint: " + a);};:};
+ER::= LR_PUNTO:a ER:b ER:c {:{System.out.println("ER: " + a + " " + b + " " + c);};
+Nodo padre = new Nodo(a);
+padre.setHijoIzq((Nodo)b);
+padre.setHijoDer((Nodo)c);
+RESULT=padre;
+:}
+    | LR_DISYUNCION:a ER:b ER:c {:{System.out.println("ER: " + a + "ER: "+ b +"ER: " +c);};
+    Nodo padre = new Nodo(a);
+    padre.setHijoIzq((Nodo)b);
+    padre.setHijoDer((Nodo)c);
+    RESULT=padre;
+    :}
+    | LR_CERRADURA_KLEENE:a ER:b {:{System.out.println("ER: " + a + " " + b);};
+    Nodo padre = new Nodo(a);
+    padre.setHijoIzq((Nodo)b);
+    RESULT=padre;
+
+    :}
+    | LR_CERRADURA_POSITIVA:a ER:b {:{System.out.println("ER: " + a + " " + b);};
+    Nodo padre = new Nodo(a);
+    padre.setHijoIzq((Nodo)b);
+    RESULT=padre;
+    :}
+    | LR_CERRADURA_INTERROGACION:a ER:b {:{System.out.println("ER: " + a + " " + b);};
+    Nodo padre = new Nodo(a);
+    padre.setHijoIzq((Nodo)b);
+    RESULT=padre;
+    :}
+    | LR_LLAVE_IZQ ID:a LR_LLAVE_DER {:{System.out.println("ER: " + a);};
+    Nodo padre = new Nodo(a);
+    padre.setHoja(true);
+    RESULT=padre;
+    :}
+    | SR:a {:{System.out.println("ER_sint: " + a);};
+    Nodo padre = new Nodo(a);
+    padre.setHoja(true);
+    RESULT=padre;
+    :}
+    | SRR:a {:{System.out.println("ER_ESPECIAL: " + a);};
+    Nodo padre = new Nodo(a);
+    padre.setHoja(true);
+    RESULT=padre;
+    :}
+    ;
 
  
 

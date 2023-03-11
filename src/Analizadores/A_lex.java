@@ -37,15 +37,15 @@ public class A_lex implements java_cup.runtime.Scanner {
    * Translates characters to character classes
    */
   private static final char [] ZZ_CMAP = {
-     0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 20, 32, 32, 19,  0,  0, 
+     0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 20, 34, 34, 19,  0,  0, 
      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
-    21, 23, 28, 29, 29, 17, 29, 29, 29, 29, 14, 15,  8,  7,  9, 24, 
-    27, 27, 27, 27, 27, 27, 27, 27, 27, 27,  6, 10, 22, 29,  1, 16, 
-    29, 26, 26,  2, 26, 26, 26, 26, 26, 26,  5, 26, 26, 26,  4,  3, 
-    26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 29, 30, 29, 29, 31, 
-    29, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 
+    21, 23, 28, 32, 32, 17, 32, 29, 32, 32, 14, 15,  8,  7,  9, 24, 
+    27, 27, 27, 27, 27, 27, 27, 27, 27, 27,  6, 10, 22, 32,  1, 16, 
+    32, 26, 26,  2, 26, 26, 26, 26, 26, 26,  5, 26, 26, 26,  4,  3, 
+    26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 32, 31, 32, 32, 33, 
+    32, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 30, 25, 
     25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 11, 13, 12, 18,  0, 
-     0,  0,  0,  0,  0, 32,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
+     0,  0,  0,  0,  0, 34,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
      0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 
@@ -62,12 +62,13 @@ public class A_lex implements java_cup.runtime.Scanner {
 
   private static final String ZZ_ACTION_PACKED_0 =
     "\1\0\1\1\1\2\2\3\1\4\1\5\1\6\1\7"+
-    "\1\10\1\11\1\12\1\13\1\14\1\15\1\16\1\17"+
-    "\1\20\1\21\2\2\1\22\1\23\2\2\2\24\1\0"+
-    "\1\21\2\0\1\24\1\0\2\21\2\25\1\26\1\21";
+    "\1\10\1\11\1\12\1\13\1\14\1\15\1\16\1\2"+
+    "\1\17\1\20\2\2\1\21\1\22\2\2\1\21\2\2"+
+    "\2\23\1\24\1\0\1\20\2\0\2\25\2\23\1\0"+
+    "\2\20\2\26\1\27\1\0";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[39];
+    int [] result = new int[46];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -92,14 +93,15 @@ public class A_lex implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\41\0\41\0\102\0\143\0\41\0\41\0\41"+
-    "\0\41\0\41\0\41\0\41\0\41\0\41\0\41\0\41"+
-    "\0\41\0\41\0\204\0\245\0\306\0\143\0\41\0\347"+
-    "\0\143\0\143\0\u0108\0\u0129\0\u014a\0\u016b\0\u018c\0\u01ad"+
-    "\0\u01ce\0\u01ef\0\41\0\41\0\u018c\0\143\0\u0129";
+    "\0\0\0\43\0\43\0\106\0\151\0\43\0\43\0\43"+
+    "\0\43\0\43\0\43\0\43\0\43\0\43\0\43\0\43"+
+    "\0\214\0\43\0\257\0\322\0\365\0\151\0\43\0\u0118"+
+    "\0\u013b\0\u015e\0\u0181\0\151\0\151\0\u01a4\0\43\0\u01c7"+
+    "\0\u01ea\0\u020d\0\u0230\0\u013b\0\u0181\0\u015e\0\u0253\0\u0276"+
+    "\0\u0299\0\43\0\43\0\u020d\0\151\0\u02bc";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[39];
+    int [] result = new int[46];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -125,18 +127,22 @@ public class A_lex implements java_cup.runtime.Scanner {
     "\1\2\1\3\1\4\3\5\1\6\1\7\1\10\1\11"+
     "\1\12\1\13\1\14\1\15\1\16\1\17\1\20\1\21"+
     "\1\22\3\23\1\24\1\3\1\25\1\26\1\5\1\27"+
-    "\1\30\2\3\1\31\44\0\1\32\1\33\2\32\23\0"+
-    "\3\32\3\0\1\32\3\0\4\32\23\0\3\32\3\0"+
-    "\1\32\24\0\3\23\42\0\1\34\41\0\1\35\10\0"+
-    "\34\36\1\0\1\36\1\37\2\36\2\0\2\32\1\40"+
-    "\1\32\23\0\3\32\3\0\1\32\1\0\27\34\1\41"+
-    "\11\34\23\35\1\42\1\43\14\35\34\36\1\44\1\36"+
-    "\1\37\36\36\1\45\1\36\1\37\2\36\2\0\3\32"+
-    "\1\46\23\0\3\32\3\0\1\32\1\0\1\34\1\47"+
-    "\25\34\1\41\11\34\24\0\1\43\14\0";
+    "\1\30\1\31\1\32\1\33\1\3\1\34\46\0\1\35"+
+    "\1\36\2\35\23\0\3\35\2\0\1\35\2\0\1\35"+
+    "\3\0\4\35\23\0\3\35\2\0\1\35\2\0\1\35"+
+    "\22\0\1\37\44\0\3\23\44\0\1\40\43\0\1\41"+
+    "\12\0\34\42\1\0\2\42\1\43\3\42\35\0\2\44"+
+    "\1\45\5\0\4\35\23\0\3\35\1\0\1\44\1\46"+
+    "\1\45\1\0\1\35\35\0\3\44\1\45\5\0\2\35"+
+    "\1\47\1\35\23\0\3\35\2\0\1\35\2\0\1\35"+
+    "\1\0\30\50\1\0\12\50\23\41\1\51\1\52\16\41"+
+    "\34\42\1\53\2\42\1\43\37\42\1\54\2\42\1\43"+
+    "\3\42\2\0\3\35\1\55\23\0\3\35\2\0\1\35"+
+    "\2\0\1\35\1\0\27\50\1\56\13\50\24\0\1\52"+
+    "\16\0\1\50\1\52\25\50\1\56\13\50";
 
   private static int [] zzUnpackTrans() {
-    int [] result = new int[528];
+    int [] result = new int[735];
     int offset = 0;
     offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -174,11 +180,12 @@ public class A_lex implements java_cup.runtime.Scanner {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\2\11\2\1\15\11\4\1\1\11\4\1\1\0"+
-    "\1\1\2\0\1\1\1\0\1\1\2\11\3\1";
+    "\1\0\2\11\2\1\13\11\1\1\1\11\4\1\1\11"+
+    "\7\1\1\11\1\0\1\1\2\0\4\1\1\0\1\1"+
+    "\2\11\2\1\1\0";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[39];
+    int [] result = new int[46];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -636,112 +643,117 @@ public class A_lex implements java_cup.runtime.Scanner {
     errores.add(tmp);
             } 
             // fall through
-          case 23: break;
+          case 24: break;
           case 2: 
             { System.out.println("CARACTER_ESPECIAL: "+yytext()); return new Symbol(sym.CARACTER_ESPECIAL, yyline, yycolumn, yytext());
             } 
             // fall through
-          case 24: break;
+          case 25: break;
           case 3: 
             { System.out.println("LETRA_MAYUSCULA: "+yytext()); return new Symbol(sym.LETRA_MAYUSCULA, yyline, yycolumn, yytext());
             } 
             // fall through
-          case 25: break;
+          case 26: break;
           case 4: 
             { System.out.println("LR_DOS_PUNTOS: "+yytext()); return new Symbol(sym.LR_DOS_PUNTOS, yyline, yycolumn, yytext());
             } 
             // fall through
-          case 26: break;
+          case 27: break;
           case 5: 
             { System.out.println("LR_GUIUION: "+yytext()); return new Symbol(sym.LR_GUIUION, yyline, yycolumn, yytext());
             } 
             // fall through
-          case 27: break;
+          case 28: break;
           case 6: 
             { System.out.println("LR_COMA: "+yytext()); return new Symbol(sym.LR_COMA, yyline, yycolumn, yytext());
             } 
             // fall through
-          case 28: break;
+          case 29: break;
           case 7: 
             { System.out.println("LR_PUNTO: "+yytext()); return new Symbol(sym.LR_PUNTO, yyline, yycolumn, yytext());
             } 
             // fall through
-          case 29: break;
+          case 30: break;
           case 8: 
             { System.out.println("LR_PUNTO_COMA: "+yytext()); return new Symbol(sym.LR_PUNTO_COMA, yyline, yycolumn, yytext());
             } 
             // fall through
-          case 30: break;
+          case 31: break;
           case 9: 
             { System.out.println("LR_LLAVE_IZQ: "+yytext()); return new Symbol(sym.LR_LLAVE_IZQ, yyline, yycolumn, yytext());
             } 
             // fall through
-          case 31: break;
+          case 32: break;
           case 10: 
             { System.out.println("LR_LLAVE_DER: "+yytext()); return new Symbol(sym.LR_LLAVE_DER, yyline, yycolumn, yytext());
             } 
             // fall through
-          case 32: break;
+          case 33: break;
           case 11: 
             { System.out.println("LR_DISYUNCION: "+yytext()); return new Symbol(sym.LR_DISYUNCION, yyline, yycolumn, yytext());
             } 
             // fall through
-          case 33: break;
+          case 34: break;
           case 12: 
             { System.out.println("LR_CERRADURA_KLEENE: "+yytext()); return new Symbol(sym.LR_CERRADURA_KLEENE, yyline, yycolumn, yytext());
             } 
             // fall through
-          case 34: break;
+          case 35: break;
           case 13: 
             { System.out.println("LR_CERRADURA_POSITIVA: "+yytext()); return new Symbol(sym.LR_CERRADURA_POSITIVA, yyline, yycolumn, yytext());
             } 
             // fall through
-          case 35: break;
+          case 36: break;
           case 14: 
             { System.out.println("LR_CERRADURA_INTERROGACION: "+yytext()); return new Symbol(sym.LR_CERRADURA_INTERROGACION, yyline, yycolumn, yytext());
             } 
             // fall through
-          case 36: break;
-          case 15: 
-            { System.out.println("PORCENTAJE "+yytext()); return new Symbol(sym.PORCENTAJE, yyline, yycolumn, yytext());
-            } 
-            // fall through
           case 37: break;
-          case 16: 
+          case 15: 
             { System.out.println("SEPARADOR: "+yytext()); return new Symbol(sym.SEPARADOR, yyline, yycolumn, yytext());
             } 
             // fall through
           case 38: break;
-          case 17: 
+          case 16: 
             { 
             } 
             // fall through
           case 39: break;
-          case 18: 
+          case 17: 
             { System.out.println("LETRA_MINUSCULA: "+yytext()); return new Symbol(sym.LETRA_MINUSCULA, yyline, yycolumn, yytext());
             } 
             // fall through
           case 40: break;
-          case 19: 
+          case 18: 
             { System.out.println("NUMERO: "+yytext()); return new Symbol(sym.NUMERO, yyline, yycolumn, yytext());
             } 
             // fall through
           case 41: break;
-          case 20: 
+          case 19: 
             { System.out.println("ID: "+yytext()); return new Symbol(sym.ID, yyline, yycolumn, yytext());
             } 
             // fall through
           case 42: break;
-          case 21: 
-            { System.out.println("SR: "+yytext()); return new Symbol(sym.SR, yyline, yycolumn, yytext());
+          case 20: 
+            { System.out.println("PORCENTAJE "+yytext()); return new Symbol(sym.PORCENTAJE, yyline, yycolumn, yytext());
             } 
             // fall through
           case 43: break;
-          case 22: 
-            { System.out.println("PR_CONJ: "+yytext()); return new Symbol(sym.PR_CONJ, yyline, yycolumn, yytext());
+          case 21: 
+            { System.out.println("SRR: "+yytext()); return new Symbol(sym.SRR, yyline, yycolumn, yytext());
             } 
             // fall through
           case 44: break;
+          case 22: 
+            { System.out.println("SR: "+yytext()); return new Symbol(sym.SR, yyline, yycolumn, yytext());
+            } 
+            // fall through
+          case 45: break;
+          case 23: 
+            { System.out.println("PR_CONJ: "+yytext()); return new Symbol(sym.PR_CONJ, yyline, yycolumn, yytext());
+            } 
+            // fall through
+          case 46: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }
