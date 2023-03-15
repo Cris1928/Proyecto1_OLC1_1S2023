@@ -28,8 +28,8 @@ parser code
     }
  
 :}
-terminal String PR_CONJ, MAYOR, LR_DOS_PUNTOS, LR_GUIUION, LR_COMA, LR_PUNTO, LR_PUNTO_COMA, LR_LLAVE_IZQ, LR_LLAVE_DER, LR_DISYUNCION, LR_CERRADURA_KLEENE;
-terminal String LR_CERRADURA_POSITIVA, LR_CERRADURA_INTERROGACION, PORCENTAJE, SEPARADOR, LETRA_MINUSCULA, LETRA_MAYUSCULA, NUMERO, CARACTER_ESPECIAL, ID, SR,SRR;
+terminal String PR_CONJ, MAYOR, LR_DOS_PUNTOS, LR_COMA, LR_PUNTO, LR_PUNTO_COMA, LR_LLAVE_IZQ, LR_LLAVE_DER, LR_DISYUNCION, LR_CERRADURA_KLEENE;
+terminal String LR_CERRADURA_POSITIVA, LR_CERRADURA_INTERROGACION, PORCENTAJE, SEPARADOR, LETRA_MINUSCULA, LETRA_MAYUSCULA, NUMERO, CARACTER_ESPECIAL, ID, SR,SRR,FLECHA;
 
 non terminal Cod;
 non terminal declaraciones;
@@ -80,11 +80,10 @@ declaracionesexp::= declaracionesexp:a declaracionexp:b {:
 
 
 
-
-declaracion::=PR_CONJ LR_DOS_PUNTOS ID:a LR_GUIUION CARACTER_ESPECIAL notacion1:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:}
-            |PR_CONJ LR_DOS_PUNTOS ID:a LR_GUIUION CARACTER_ESPECIAL notaciones:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:};
+declaracion::=PR_CONJ LR_DOS_PUNTOS ID:a FLECHA  notacion1:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:}
+            |PR_CONJ LR_DOS_PUNTOS ID:a FLECHA notaciones:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:};
             
-declaracionexp::=ID:b LR_GUIUION CARACTER_ESPECIAL ER:a LR_PUNTO_COMA {:{System.out.println("Declaracion de ER: " + b + "=" + a);};
+declaracionexp::=ID:b FLECHA ER:a LR_PUNTO_COMA {:{System.out.println("Declaracion de ER: " + b + "=" + a);};
 
             arbol.add(new Token((Nodo) a));
             :}
@@ -104,8 +103,8 @@ notaciones::= notaciones:a LR_COMA notacion2:b {:{System.out.println("Notaciones
 
 notacion2::= LETRA_MAYUSCULA:a {:{System.out.println("Notacion 2: " + a);};:}
     | LETRA_MINUSCULA:a {:{System.out.println("Notacion 2: " + a);};:}
-    | CARACTER_ESPECIAL:a {:{System.out.println("Notacion 2: " + a);};:}
-    | NUMERO:a {:{System.out.println("Notacion 2: " + a);};:};
+    | NUMERO:a {:{System.out.println("Notacion 2: " + a);};:}
+    | CARACTER_ESPECIAL:a {:{System.out.println("Notacion 2: " + a);};:};
 
 
 

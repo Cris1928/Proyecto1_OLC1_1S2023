@@ -29,10 +29,8 @@ import java_cup.runtime.*;
 %init}
 
 
-MAYOR=">"
 PR_CONJ="CONJ"
 LR_DOS_PUNTOS=":"
-LR_GUIUION="-"
 LR_COMA=","
 LR_PUNTO="."
 LR_PUNTO_COMA=";"
@@ -55,7 +53,7 @@ COMENTARIO_L="//" {CARACTER_ENTRADA}* {FINLINEA}?
 LETRA_MINUSCULA=[a-z]
 LETRA_MAYUSCULA=[A-Z]
 NUMERO=[0-9]
-
+FLECHA="-"{ESPACIOS}*">"
 
 ENTR=[^\r\n\"]
 SL=[\\']
@@ -63,7 +61,7 @@ SLL=[\\n]
 SLLL=[\\]
 SLLLL=[\"]
 CARACTER_ESPECIAL=[ -/:-@\[-`{-}]
-ID=[a-zA-Z_][a-zA-Z0-9_]+
+ID=[a-zA-Z][a-zA-Z0-9]+
 
 SR=\"({ENTR}|{ESPACIOS}|{SL}|{SLLL}{SLLLL}|{SLL})+\"
 SRR=({SL}|{SLLL}{SLLLL}|{SLL})+
@@ -76,7 +74,6 @@ SRR=({SL}|{SLLL}{SLLLL}|{SLL})+
 
 <YYINITIAL> {PR_CONJ} { System.out.println("PR_CONJ: "+yytext()); return new Symbol(sym.PR_CONJ, yyline, yycolumn, yytext());}
 <YYINITIAL> {LR_DOS_PUNTOS} { System.out.println("LR_DOS_PUNTOS: "+yytext()); return new Symbol(sym.LR_DOS_PUNTOS, yyline, yycolumn, yytext());}
-<YYINITIAL> {LR_GUIUION} { System.out.println("LR_GUIUION: "+yytext()); return new Symbol(sym.LR_GUIUION, yyline, yycolumn, yytext());}
 <YYINITIAL> {LR_COMA} { System.out.println("LR_COMA: "+yytext()); return new Symbol(sym.LR_COMA, yyline, yycolumn, yytext());}
 <YYINITIAL> {LR_PUNTO} { System.out.println("LR_PUNTO: "+yytext()); return new Symbol(sym.LR_PUNTO, yyline, yycolumn, yytext());}
 <YYINITIAL> {LR_PUNTO_COMA} {System.out.println("LR_PUNTO_COMA: "+yytext()); return new Symbol(sym.LR_PUNTO_COMA, yyline, yycolumn, yytext());}
@@ -93,9 +90,10 @@ SRR=({SL}|{SLLL}{SLLLL}|{SLL})+
 <YYINITIAL> {LETRA_MAYUSCULA} {System.out.println("LETRA_MAYUSCULA: "+yytext()); return new Symbol(sym.LETRA_MAYUSCULA, yyline, yycolumn, yytext());}
 <YYINITIAL> {NUMERO} {System.out.println("NUMERO: "+yytext()); return new Symbol(sym.NUMERO, yyline, yycolumn, yytext());}
 <YYINITIAL> {CARACTER_ESPECIAL} {System.out.println("CARACTER_ESPECIAL: "+yytext()); return new Symbol(sym.CARACTER_ESPECIAL, yyline, yycolumn, yytext());}
-<YYINITIAL> {MAYOR} {System.out.println("MAYOR: "+yytext()); return new Symbol(sym.MAYOR, yyline, yycolumn, yytext());}
 <YYINITIAL> {SR} {System.out.println("SR: "+yytext()); return new Symbol(sym.SR, yyline, yycolumn, yytext());}
 <YYINITIAL> {SRR} {System.out.println("SRR: "+yytext()); return new Symbol(sym.SRR, yyline, yycolumn, yytext());}
+<YYINITIAL> {FLECHA} {System.out.println("FLECHA: "+yytext()); return new Symbol(sym.FLECHA, yyline, yycolumn, yytext());}
+
 
 <YYINITIAL>  . {
     System.out.println("Este es un error lexico: "+yytext()+", en la linea: "+yyline+", en la columna: "+yycolumn);
