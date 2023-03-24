@@ -1,0 +1,317 @@
+digraph Arbol_Sintactico {
+
+n1[
+   label=<
+<TABLE BGCOLOR="bisque">
+<TR>
+ <TD COLSPAN="3"  BGCOLOR="Red">false</TD>
+ <TD ROWSPAN="2" BGCOLOR="Orange" 
+  VALIGN="bottom" ALIGN="right">[8]</TD> 
+ </TR>
+  <TR>
+   <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
+  [1, 2]
+ </TD> 
+  <TD BGCOLOR="white"  BORDER="4">.</TD> 
+ </TR>
+ </TABLE>> 
+   ]
+n2[
+   label=<
+<TABLE BGCOLOR="bisque">
+<TR>
+ <TD COLSPAN="3"  BGCOLOR="Red">false</TD>
+ <TD ROWSPAN="2" BGCOLOR="Orange" 
+  VALIGN="bottom" ALIGN="right">[7]</TD> 
+ </TR>
+  <TR>
+   <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
+  [1, 2]
+ </TD> 
+  <TD BGCOLOR="white"  BORDER="4">.</TD> 
+ </TR>
+ </TABLE>> 
+   ]
+n1->n2
+n3[
+   label=<
+<TABLE BGCOLOR="bisque">
+<TR>
+ <TD COLSPAN="3"  BGCOLOR="Red">false</TD>
+ <TD ROWSPAN="2" BGCOLOR="Orange" 
+  VALIGN="bottom" ALIGN="right">[1, 2, 3]</TD> 
+ </TR>
+  <TR>
+   <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
+  [1, 2]
+ </TD> 
+  <TD BGCOLOR="white"  BORDER="4">.</TD> 
+ </TR>
+ </TABLE>> 
+   ]
+n2->n3
+n4[
+   label=<
+<TABLE BGCOLOR="bisque">
+<TR>
+ <TD COLSPAN="3"  BGCOLOR="Red">false</TD>
+ <TD ROWSPAN="2" BGCOLOR="Orange" 
+  VALIGN="bottom" ALIGN="right">[1, 2]</TD> 
+ </TR>
+  <TR>
+   <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
+  [1, 2]
+ </TD> 
+  <TD BGCOLOR="white"  BORDER="4">|</TD> 
+ </TR>
+ </TABLE>> 
+   ]
+n3->n4
+n5[
+   label=<
+<TABLE BGCOLOR="bisque">
+<TR>
+ <TD COLSPAN="3"  BGCOLOR="Red">false</TD>
+ <TD ROWSPAN="2" BGCOLOR="Orange" 
+  VALIGN="bottom" ALIGN="right">[1]</TD> 
+ </TR>
+  <TR>
+   <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
+  [1]
+ </TD> 
+  <TD BGCOLOR="white"  BORDER="4">letra</TD> 
+ </TR>
+ <TR>
+  <TD COLSPAN="2" ALIGN="right" PORT="there"  BGCOLOR="Green">1</TD>
+  </TR>
+  </TABLE>> 
+   ]
+n4->n5
+n6[
+   label=<
+<TABLE BGCOLOR="bisque">
+<TR>
+ <TD COLSPAN="3"  BGCOLOR="Red">false</TD>
+ <TD ROWSPAN="2" BGCOLOR="Orange" 
+  VALIGN="bottom" ALIGN="right">[2]</TD> 
+ </TR>
+  <TR>
+   <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
+  [2]
+ </TD> 
+  <TD BGCOLOR="white"  BORDER="4">2</TD> 
+ </TR>
+ <TR>
+  <TD COLSPAN="2" ALIGN="right" PORT="there"  BGCOLOR="Green">2</TD>
+  </TR>
+  </TABLE>> 
+   ]
+n4->n6
+n7[
+   label=<
+<TABLE BGCOLOR="bisque">
+<TR>
+ <TD COLSPAN="3"  BGCOLOR="Red">true</TD>
+ <TD ROWSPAN="2" BGCOLOR="Orange" 
+  VALIGN="bottom" ALIGN="right">[3]</TD> 
+ </TR>
+  <TR>
+   <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
+  [3]
+ </TD> 
+  <TD BGCOLOR="white"  BORDER="4">*</TD> 
+ </TR>
+ </TABLE>> 
+   ]
+n3->n7
+n8[
+   label=<
+<TABLE BGCOLOR="bisque">
+<TR>
+ <TD COLSPAN="3"  BGCOLOR="Red">false</TD>
+ <TD ROWSPAN="2" BGCOLOR="Orange" 
+  VALIGN="bottom" ALIGN="right">[3]</TD> 
+ </TR>
+  <TR>
+   <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
+  [3]
+ </TD> 
+  <TD BGCOLOR="white"  BORDER="4">nums</TD> 
+ </TR>
+ <TR>
+  <TD COLSPAN="2" ALIGN="right" PORT="there"  BGCOLOR="Green">3</TD>
+  </TR>
+  </TABLE>> 
+   ]
+n7->n8
+n9[
+   label=<
+<TABLE BGCOLOR="bisque">
+<TR>
+ <TD COLSPAN="3"  BGCOLOR="Red">false</TD>
+ <TD ROWSPAN="2" BGCOLOR="Orange" 
+  VALIGN="bottom" ALIGN="right">[7]</TD> 
+ </TR>
+  <TR>
+   <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
+  [4, 5, 6, 7]
+ </TD> 
+  <TD BGCOLOR="white"  BORDER="4">.</TD> 
+ </TR>
+ </TABLE>> 
+   ]
+n2->n9
+n10[
+   label=<
+<TABLE BGCOLOR="bisque">
+<TR>
+ <TD COLSPAN="3"  BGCOLOR="Red">true</TD>
+ <TD ROWSPAN="2" BGCOLOR="Orange" 
+  VALIGN="bottom" ALIGN="right">[4, 5, 6]</TD> 
+ </TR>
+  <TR>
+   <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
+  [4, 5, 6]
+ </TD> 
+  <TD BGCOLOR="white"  BORDER="4">|</TD> 
+ </TR>
+ </TABLE>> 
+   ]
+n9->n10
+n11[
+   label=<
+<TABLE BGCOLOR="bisque">
+<TR>
+ <TD COLSPAN="3"  BGCOLOR="Red">true</TD>
+ <TD ROWSPAN="2" BGCOLOR="Orange" 
+  VALIGN="bottom" ALIGN="right">[4, 5]</TD> 
+ </TR>
+  <TR>
+   <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
+  [4, 5]
+ </TD> 
+  <TD BGCOLOR="white"  BORDER="4">*</TD> 
+ </TR>
+ </TABLE>> 
+   ]
+n10->n11
+n12[
+   label=<
+<TABLE BGCOLOR="bisque">
+<TR>
+ <TD COLSPAN="3"  BGCOLOR="Red">false</TD>
+ <TD ROWSPAN="2" BGCOLOR="Orange" 
+  VALIGN="bottom" ALIGN="right">[4, 5]</TD> 
+ </TR>
+  <TR>
+   <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
+  [4, 5]
+ </TD> 
+  <TD BGCOLOR="white"  BORDER="4">|</TD> 
+ </TR>
+ </TABLE>> 
+   ]
+n11->n12
+n13[
+   label=<
+<TABLE BGCOLOR="bisque">
+<TR>
+ <TD COLSPAN="3"  BGCOLOR="Red">false</TD>
+ <TD ROWSPAN="2" BGCOLOR="Orange" 
+  VALIGN="bottom" ALIGN="right">[4]</TD> 
+ </TR>
+  <TR>
+   <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
+  [4]
+ </TD> 
+  <TD BGCOLOR="white"  BORDER="4">separados</TD> 
+ </TR>
+ <TR>
+  <TD COLSPAN="2" ALIGN="right" PORT="there"  BGCOLOR="Green">4</TD>
+  </TR>
+  </TABLE>> 
+   ]
+n12->n13
+n14[
+   label=<
+<TABLE BGCOLOR="bisque">
+<TR>
+ <TD COLSPAN="3"  BGCOLOR="Red">false</TD>
+ <TD ROWSPAN="2" BGCOLOR="Orange" 
+  VALIGN="bottom" ALIGN="right">[5]</TD> 
+ </TR>
+  <TR>
+   <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
+  [5]
+ </TD> 
+  <TD BGCOLOR="white"  BORDER="4">mayus</TD> 
+ </TR>
+ <TR>
+  <TD COLSPAN="2" ALIGN="right" PORT="there"  BGCOLOR="Green">5</TD>
+  </TR>
+  </TABLE>> 
+   ]
+n12->n14
+n15[
+   label=<
+<TABLE BGCOLOR="bisque">
+<TR>
+ <TD COLSPAN="3"  BGCOLOR="Red">false</TD>
+ <TD ROWSPAN="2" BGCOLOR="Orange" 
+  VALIGN="bottom" ALIGN="right">[6]</TD> 
+ </TR>
+  <TR>
+   <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
+  [6]
+ </TD> 
+  <TD BGCOLOR="white"  BORDER="4">x</TD> 
+ </TR>
+ <TR>
+  <TD COLSPAN="2" ALIGN="right" PORT="there"  BGCOLOR="Green">6</TD>
+  </TR>
+  </TABLE>> 
+   ]
+n10->n15
+n16[
+   label=<
+<TABLE BGCOLOR="bisque">
+<TR>
+ <TD COLSPAN="3"  BGCOLOR="Red">false</TD>
+ <TD ROWSPAN="2" BGCOLOR="Orange" 
+  VALIGN="bottom" ALIGN="right">[7]</TD> 
+ </TR>
+  <TR>
+   <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
+  [7]
+ </TD> 
+  <TD BGCOLOR="white"  BORDER="4">separados</TD> 
+ </TR>
+ <TR>
+  <TD COLSPAN="2" ALIGN="right" PORT="there"  BGCOLOR="Green">7</TD>
+  </TR>
+  </TABLE>> 
+   ]
+n9->n16
+n17[
+   label=<
+<TABLE BGCOLOR="bisque">
+<TR>
+ <TD COLSPAN="3"  BGCOLOR="Red">false</TD>
+ <TD ROWSPAN="2" BGCOLOR="Orange" 
+  VALIGN="bottom" ALIGN="right">[8]</TD> 
+ </TR>
+  <TR>
+   <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
+  [8]
+ </TD> 
+  <TD BGCOLOR="white"  BORDER="4">#</TD> 
+ </TR>
+ <TR>
+  <TD COLSPAN="2" ALIGN="right" PORT="there"  BGCOLOR="Green">8</TD>
+  </TR>
+  </TABLE>> 
+   ]
+n1->n17
+
+
+}

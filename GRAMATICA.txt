@@ -1,0 +1,68 @@
+terminal  PR_CONJ, MAYOR, LR_DOS_PUNTOS, LR_COMA, LR_PUNTO, LR_PUNTO_COMA, LR_LLAVE_IZQ, LR_LLAVE_DER, LR_DISYUNCION, LR_CERRADURA_KLEENE
+terminal LR_CERRADURA_POSITIVA, LR_CERRADURA_INTERROGACION, PORCENTAJE, SEPARADOR, LETRA_MINUSCULA, LETRA_MAYUSCULA, NUMERO, CARACTER_ESPECIAL, ID, SR,SRR,FLECHA
+
+non terminal Cod
+non terminal declaraciones
+non terminal declaracion
+non terminal instrucciones
+non terminal instruccion
+non terminal notacion1
+non terminal notaciones
+non terminal notacion2
+non terminal ER
+
+
+
+start with Cod
+
+Cod::= LR_LLAVE_IZQ declaraciones  PORCENTAJE PORCENTAJE instrucciones LR_LLAVE_DER
+
+
+declaraciones::= declaraciones declaracion
+                | declaracion
+
+
+
+
+
+declaracion::=PR_CONJ LR_DOS_PUNTOS ID FLECHA  notacion1 LR_PUNTO_COMA 
+            |PR_CONJ LR_DOS_PUNTOS ID FLECHA notaciones LR_PUNTO_COMA 
+            |ID FLECHA ER LR_PUNTO_COMA 
+            |error LR_PUNTO_COMA;
+            
+
+
+
+notacion1::= LETRA_MAYUSCULA SEPARADOR LETRA_MAYUSCULA
+    | LETRA_MINUSCULA SEPARADOR LETRA_MINUSCULA
+    | CARACTER_ESPECIAL SEPARADOR CARACTER_ESPECIAL
+    | NUMERO SEPARADOR NUMERO
+
+notaciones::= notaciones LR_COMA notacion2
+    | notacion2
+
+
+notacion2::= LETRA_MAYUSCULA
+    | LETRA_MINUSCULA
+    | NUMERO
+    | CARACTER_ESPECIAL
+
+
+
+
+ER::= LR_PUNTO ER ER
+
+    | LR_DISYUNCION ER ER
+    | LR_CERRADURA_KLEENE ER
+    | LR_CERRADURA_POSITIVA ER
+    | LR_CERRADURA_INTERROGACION ER
+    | LR_LLAVE_IZQ ID LR_LLAVE_DER 
+    | SR
+    | SRR
+
+ 
+
+instrucciones::= instrucciones instruccion 
+                |instruccion;
+                
+instruccion::= ID LR_DOS_PUNTOS SR LR_PUNTO_COMA

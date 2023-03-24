@@ -1,0 +1,23 @@
+digraph { label = "Exp: correoElectronico"  
+    node [ shape=none fontname=Helvetica ]
+     n4 [ label = <
+  <table border="4 ">
+    <tr><td colspan="2" bgcolor="red">Hoja</td><td colspan="2" bgcolor="red">Siguiente</td></tr>
+<tr><td bgcolor="yellow"> minuscula </td><td bgcolor="#77ff33">1 </td><td bgcolor="orange">3,4,5,6, </td></tr>
+<tr><td bgcolor="yellow"> mayuscula </td><td bgcolor="#77ff33">2 </td><td bgcolor="orange">3,4,5,6, </td></tr>
+<tr><td bgcolor="yellow"> simbolos </td><td bgcolor="#77ff33">3 </td><td bgcolor="orange">3,4,5,6,7, </td></tr>
+<tr><td bgcolor="yellow"> minuscula </td><td bgcolor="#77ff33">4 </td><td bgcolor="orange">3,4,5,6,7, </td></tr>
+<tr><td bgcolor="yellow"> mayuscula </td><td bgcolor="#77ff33">5 </td><td bgcolor="orange">3,4,5,6,7, </td></tr>
+<tr><td bgcolor="yellow"> numero </td><td bgcolor="#77ff33">6 </td><td bgcolor="orange">3,4,5,6,7, </td></tr>
+<tr><td bgcolor="yellow"> @ </td><td bgcolor="#77ff33">7 </td><td bgcolor="orange">8,9, </td></tr>
+<tr><td bgcolor="yellow"> minuscula </td><td bgcolor="#77ff33">8 </td><td bgcolor="orange">8,9,10, </td></tr>
+<tr><td bgcolor="yellow"> mayuscula </td><td bgcolor="#77ff33">9 </td><td bgcolor="orange">8,9,10, </td></tr>
+<tr><td bgcolor="yellow"> . </td><td bgcolor="#77ff33">10 </td><td bgcolor="orange">11, </td></tr>
+<tr><td bgcolor="yellow"> c </td><td bgcolor="#77ff33">11 </td><td bgcolor="orange">12, </td></tr>
+<tr><td bgcolor="yellow"> o </td><td bgcolor="#77ff33">12 </td><td bgcolor="orange">13, </td></tr>
+<tr><td bgcolor="yellow"> m </td><td bgcolor="#77ff33">13 </td><td bgcolor="orange">14, </td></tr>
+<tr><td bgcolor="yellow"> # </td><td bgcolor="#77ff33">14 </td><td bgcolor="orange"> </td></tr>
+   </table>
+   > ]
+ {rank=same n4}
+  }

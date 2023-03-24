@@ -60,6 +60,6 @@ public class Errores {
 
     @Override
     public String toString() {
-        return "Errores{" + "message=" + message + ", type=" + type + ", fila=" + fila + ", columna=" + columna + '}';
+        return "Errores{" + "message=" + message + ", type=" + type + ", columna=" + fila + ", fila=" + columna + '}';
     }
 }

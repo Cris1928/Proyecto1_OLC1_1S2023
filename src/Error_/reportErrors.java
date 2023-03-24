@@ -1,5 +1,6 @@
 package Error_;
 import java.io.FileWriter;
+
 import java.util.LinkedList;
 
 
@@ -102,8 +103,8 @@ public class reportErrors {
                 + "						    <tr>\n"
                 + "						      <th>Descripcion</th>\n"
                 + "						      <th>Tipo</th>\n"
-                + "						      <th>Linea</th>\n"
                 + "						      <th>Columna</th>\n"
+                + "						      <th>Fila</th>\n"
                 + "						    </tr>\n"
                 + "						  </thead>\n"
                 + "						  <tbody>";
@@ -123,9 +124,10 @@ public class reportErrors {
 
     public void mostrarReporte() {
         try {
-            FileWriter file = new FileWriter("Reporte errores.html");
+            FileWriter file = new FileWriter("C:\\Users\\USER\\Desktop\\P1_OLC1_1S2023\\src\\GRAFICAS\\ERRORES_202107190\\Reporte_errores.html");
             file.write(inicio + Lexico + sintactico + fin);
             file.close();
+            //Desktop.getDesktop().open(new File(file_get_path));
             System.out.println("Reporte generado con exito.");
         } catch (Exception e) {
         }

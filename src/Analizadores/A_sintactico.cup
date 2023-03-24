@@ -10,6 +10,7 @@ parser code
     public ArrayList<Token> arbol = new ArrayList<Token>();
 
     public static LinkedList<Errores> errores  = new LinkedList<Errores>();
+      public static Dictionary<String, ArrayList> cade  = new Hashtable<>();
 
     public void syntax_error(Symbol s)
     {
@@ -40,20 +41,12 @@ non terminal notacion1;
 non terminal notaciones;
 non terminal notacion2;
 non terminal ER;
-non terminal declaracionesexp;
-non terminal declaracionexp;
 
 
 
 start with Cod;
 
-Cod::= LR_LLAVE_IZQ declaraciones declaracionesexp:a PORCENTAJE PORCENTAJE instrucciones LR_LLAVE_DER{:
-    System.out.println("Codigo: " + a);
-
-:}
-
-
-;
+Cod::= LR_LLAVE_IZQ declaraciones  PORCENTAJE PORCENTAJE instrucciones LR_LLAVE_DER;
 
 
 declaraciones::= declaraciones:a declaracion:b {:
@@ -68,36 +61,63 @@ declaraciones::= declaraciones:a declaracion:b {:
 
 
 
-declaracionesexp::= declaracionesexp:a declaracionexp:b {:
-                                                {System.out.println("Declaraciones: " + a + " " + b);};
-
-                                                :}
-                | declaracionexp:a {:
-                                                {System.out.println("Declaraciones: " + a);};
-
-                                    :}
-                ;
-
-
 
 declaracion::=PR_CONJ LR_DOS_PUNTOS ID:a FLECHA  notacion1:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:}
-            |PR_CONJ LR_DOS_PUNTOS ID:a FLECHA notaciones:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};:};
+            |PR_CONJ LR_DOS_PUNTOS ID:a FLECHA notaciones:b LR_PUNTO_COMA {:{System.out.println("Declaracion de conjunto: " + a);};
             
-declaracionexp::=ID:b FLECHA ER:a LR_PUNTO_COMA {:{System.out.println("Declaracion de ER: " + b + "=" + a);};
+              String n = (String) b;
+           ArrayList<Integer> tmp = new ArrayList<>();
+              for(int i = 0; i < n.length(); i++){
+                tmp.add((int) n.charAt(i));
+                }
+            cade.put(a,  tmp);
 
-            arbol.add(new Token((Nodo) a));
+            :}
+            |ID:b FLECHA ER:a LR_PUNTO_COMA {:{System.out.println("Declaracion de ER: " + b + "=" + a);};
+
+            arbol.add(new Token((Nodo) a, String b));
             :}
             |error LR_PUNTO_COMA;
             
 
 
 
-notacion1::= LETRA_MAYUSCULA:a SEPARADOR LETRA_MAYUSCULA:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:} 
-    | LETRA_MINUSCULA:a SEPARADOR LETRA_MINUSCULA:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:}
-    | CARACTER_ESPECIAL:a SEPARADOR CARACTER_ESPECIAL:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:}
-    | NUMERO:a SEPARADOR NUMERO:b {:{System.out.println("Notacion 1: " + a + " - " + b);};:};
+notacion1::= LETRA_MAYUSCULA:a SEPARADOR LETRA_MAYUSCULA:b {:{System.out.println("Notacion 1: " + a + " - " + b);};
 
-notaciones::= notaciones:a LR_COMA notacion2:b {:{System.out.println("Notaciones: " + a + " , " + b);};:}
+ ArrayList<Integer> tm = new ArrayList<Integer>();
+    for(int i = (int) a.charAt(0); i <= (int) b.charAt(0); i++){
+        tm.add(i);
+    }
+    RESULT = tm;
+:} 
+    | LETRA_MINUSCULA:a SEPARADOR LETRA_MINUSCULA:b {:{System.out.println("Notacion 1: " + a + " - " + b);};
+    
+     ArrayList<Integer> tm = new ArrayList<Integer>();
+    for(int i = (int) a.charAt(0); i <= (int) b.charAt(0); i++){
+        tm.add(i);
+    }
+    RESULT = tm;
+    :}
+    | CARACTER_ESPECIAL:a SEPARADOR CARACTER_ESPECIAL:b {:{System.out.println("Notacion 1: " + a + " - " + b);};
+    
+     ArrayList<Integer> tm = new ArrayList<Integer>();
+    for(int i = (int) a.charAt(0); i <= (int) b.charAt(0); i++){
+        tm.add(i);
+    }
+    RESULT = tm;
+    :}
+    | NUMERO:a SEPARADOR NUMERO:b {:{System.out.println("Notacion 1: " + a + " - " + b);};
+    
+     ArrayList<Integer> tm = new ArrayList<Integer>();
+    for(int i = (int) a.charAt(0); i <= (int) b.charAt(0); i++){
+        tm.add(i);
+    }
+    RESULT = tm;
+    :};
+
+notaciones::= notaciones:a LR_COMA notacion2:b {:{System.out.println("Notaciones: " + a + " , " + b);};
+RESULT= (String)a+(String)b;
+:}
     | notacion2:a {:{System.out.println("Notaciones: " + a);};:};
 
 
@@ -125,7 +145,6 @@ RESULT=padre;
     Nodo padre = new Nodo(a);
     padre.setHijoIzq((Nodo)b);
     RESULT=padre;
-
     :}
     | LR_CERRADURA_POSITIVA:a ER:b {:{System.out.println("ER: " + a + " " + b);};
     Nodo padre = new Nodo(a);

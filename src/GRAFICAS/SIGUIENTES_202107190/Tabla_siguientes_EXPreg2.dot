@@ -1,0 +1,17 @@
+digraph { label = "Exp: EXPreg2"  
+    node [ shape=none fontname=Helvetica ]
+     n4 [ label = <
+  <table border="4 ">
+    <tr><td colspan="2" bgcolor="red">Hoja</td><td colspan="2" bgcolor="red">Siguiente</td></tr>
+<tr><td bgcolor="yellow"> letra </td><td bgcolor="#77ff33">1 </td><td bgcolor="orange">3,4,5,6,7, </td></tr>
+<tr><td bgcolor="yellow"> 2 </td><td bgcolor="#77ff33">2 </td><td bgcolor="orange">3,4,5,6,7, </td></tr>
+<tr><td bgcolor="yellow"> nums </td><td bgcolor="#77ff33">3 </td><td bgcolor="orange">3,4,5,6,7, </td></tr>
+<tr><td bgcolor="yellow"> separados </td><td bgcolor="#77ff33">4 </td><td bgcolor="orange">4,5,7, </td></tr>
+<tr><td bgcolor="yellow"> mayus </td><td bgcolor="#77ff33">5 </td><td bgcolor="orange">4,5,7, </td></tr>
+<tr><td bgcolor="yellow"> x </td><td bgcolor="#77ff33">6 </td><td bgcolor="orange">7, </td></tr>
+<tr><td bgcolor="yellow"> separados </td><td bgcolor="#77ff33">7 </td><td bgcolor="orange">8, </td></tr>
+<tr><td bgcolor="yellow"> # </td><td bgcolor="#77ff33">8 </td><td bgcolor="orange"> </td></tr>
+   </table>
+   > ]
+ {rank=same n4}
+  }

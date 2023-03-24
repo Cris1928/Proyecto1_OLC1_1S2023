@@ -1,0 +1,13 @@
+digraph { label = "Exp: EXPreg"  
+    node [ shape=none fontname=Helvetica ]
+     n4 [ label = <
+  <table border="4 ">
+    <tr><td colspan="2" bgcolor="red">Hoja</td><td colspan="2" bgcolor="red">Siguiente</td></tr>
+<tr><td bgcolor="yellow"> nuevo </td><td bgcolor="#77ff33">1 </td><td bgcolor="orange">3,4, </td></tr>
+<tr><td bgcolor="yellow"> 2 </td><td bgcolor="#77ff33">2 </td><td bgcolor="orange">3,4, </td></tr>
+<tr><td bgcolor="yellow"> nuevo </td><td bgcolor="#77ff33">3 </td><td bgcolor="orange">3,4, </td></tr>
+<tr><td bgcolor="yellow"> # </td><td bgcolor="#77ff33">4 </td><td bgcolor="orange"> </td></tr>
+   </table>
+   > ]
+ {rank=same n4}
+  }

@@ -2,9 +2,22 @@ package Arbol;
 import java.io.BufferedInputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.processing.SupportedOptions;
+
 import java.util.Collections;
 import jflex.StdOutWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
 
+import PROYECTO1.NodoJS;
+import PROYECTO1.Ventana_principal;
+//import PROYECTO1.NodoJS;
+import PROYECTO1.Ventana_principal.*;
+import java.awt.Desktop;
+import java.lang.System;
 public class Token {
     List<Nodo_estados> estados_trans = new ArrayList<Nodo_estados>();
     List<Nodo_siguientes> listas = new ArrayList<Nodo_siguientes>();
@@ -13,26 +26,27 @@ public class Token {
     List<Nodo_aux> listaaux = new ArrayList<Nodo_aux>();
     List<Nodo_TablaTransiciones> TablaT = new ArrayList<Nodo_TablaTransiciones>();
     List<Nodo_AFD> AFD = new ArrayList<Nodo_AFD>();
+    List<List<Nodo_AFD> > AFD2 = new ArrayList<List<Nodo_AFD> >();
     List<String> llll = new ArrayList<>();
     List<Integer> listaPrimer = new ArrayList<>();
     int primer=0;
-
     private Nodo Arbol;
     private int num=1;
     private int verificador =0;
     public String complet="";
     public String complet2="";
     public String complet3="";
-   // public String llll[];
+    public String compew="";
+    public int nodo=1;
     
-    public Token(Nodo Arbol){
+    public Token(Nodo Arbol, String nio){
+        
         Nodo raiz = new Nodo(".");
         Nodo alm= new Nodo("#");
         alm.setHoja(true);
         alm.setAnulable(false);
         raiz.setHijoDer(alm);
         raiz.setHijoIzq(Arbol);
-
         this.Arbol = raiz;
         asignar_id(this.Arbol);
         num=0;
@@ -40,17 +54,74 @@ public class Token {
         String Transiciones="";
         String graf_AFD="";
         String Tabla="";
+        
+        String AFND="";
     
-        String grapviz="Digraph Arbol_Sintactico{\n\n" + Arobol_grafica(this.Arbol,num) + "\n\n}";
+        String grapviz="digraph Arbol_Sintactico {\n\n" + Arobol_grafica(this.Arbol,num) + "\n\n}";
+      //  System.out.println(grapviz);
+      
+       // System.out.println("valor de variable1: "+nio);
 
-        System.out.println(grapviz);
-      //  System.out.println("--------------------------------------------------------------------------------------");
+       //   ------------------------------------------- GRAFICA DEL ARBOL BINARIO --------------------------- System.out.println(grapviz);
+       String direccion="C:/Users/USER/Desktop/P1_OLC1_1S2023/src/GRAFICAS/ARBOLES_202107190/Arbol_Binario"+nio;
+        File dotFile = new File("C:\\Users\\USER\\Desktop\\P1_OLC1_1S2023\\src\\GRAFICAS\\ARBOLES_202107190\\Arbol_Binario"+nio+".dot");
+        PrintWriter dotWriter = null;
+        try{
+            dotWriter = new PrintWriter(dotFile);
+            dotWriter.write(grapviz);
+            //dotWriter.close();
+          } catch (IOException ex) {
+            // Manejo de excepciones
+        } finally {
+            if (dotWriter != null) {
+                dotWriter.close();
+            }
+        }
+
+        try {
+
+          ProcessBuilder pBuilder;
+          pBuilder = new ProcessBuilder("C:\\Program Files\\Graphviz\\bin\\dot.exe", "-Tpng",  direccion+".dot ","-o", direccion+".png");
+          pBuilder.redirectErrorStream(true);
+         pBuilder.start();
+     
+     
+     
+     
+      } catch (Exception ex) {
+          ex.printStackTrace();
+      } 
+      
+
+/*          String[] c = new String[5];
+          c[0]="C:/Program Files/Graphviz/bin/dot.exe";
+          c[1]=" -Tpng ";
+          c[2]=direccion+".dot";
+          c[3]=" -o ";
+          c[4]=direccion+".png";
+          Runtime p = Runtime.getRuntime();
+          p.exec(c);
+          System.out.println("Se genero el archivo");
+        //  System.out.println(c[0]+c[1]+c[2]+c[3]+c[4]);
+      */
+
+
+
+
+
+              
+
+
+
+
+
+      //  System.out.println("--------------------------------------------------------------------------------------");"C:\\Users\\USER\\Desktop\\Proyecto1_OLC1_1S2023-main\\src\\ARBOLES_202107190"
 
        // System.out.println(Tabla);
    /*     for (int i = 0; i < listas.size(); i++) {
             System.out.println("Primero: "+listas.get(i).getList1()+"  Ultimo: "+listas.get(i).getList2());
         }*/
-      //  System.out.println("--------------------------------------------------------------------------------------");
+      //  System.out.println("--------------------------------------------------------------------------------------");"C:\\Users\\Usuario\\Desktop\\Proyecto1\\src\\Arbol\\Arbol_Sintactico.txt"
         int con=1;
         String c="";
         for (int i = 0; i < listaH.size(); i++) {
@@ -195,10 +266,8 @@ listaaux.add(new Nodo_aux(listas2.get(k).getList1().get(l)));
 
 
 
-  boolean bandera_comprobante2=false;
-  boolean bandera_comprobante3=false;
   ArrayList<Integer> numeros = new ArrayList<Integer>();
-String aceptacion="";
+  ArrayList<Integer> aceptacion = new ArrayList<Integer>();
   int S_n=0;
   int S_id=0;
 /*  
@@ -211,28 +280,37 @@ String aceptacion="";
     System.out.println("");
   }
 */
+
+
+
+
+
+
 listas2.remove(listas2.size()-1);
 
-  for(int nuec=0;nuec<listas2.size();nuec++){
-    for(int nuec2=0;nuec2<listas2.get(nuec).getId().size();nuec2++){
-  //   System.out.println("Token: "+listas2.get(nuec).getToken());
-    //  System.out.println("Id: "+listas2.get(nuec).getId().get(nuec2));
-    //  System.out.println("Siguiente: "+listas2.get(nuec).getList1().get(nuec2));
-      numeros.add(listas2.get(nuec).getId().get(nuec2));
-    }
+for(int nuec=0;nuec<listas2.size();nuec++){
+  for(int nuec2=0;nuec2<listas2.get(nuec).getId().size();nuec2++){
+//   System.out.println("Token: "+listas2.get(nuec).getToken());
+  //  System.out.println("Id: "+listas2.get(nuec).getId().get(nuec2));
+  //  System.out.println("Siguiente: "+listas2.get(nuec).getList1().get(nuec2));
+    numeros.add(listas2.get(nuec).getId().get(nuec2));
   }
+}
 
 int max = Collections.max(numeros);
+//System.out.println("maximo: "+max);
 
-  for(int n1=0;n1<listas2.size();n1++){
-    for(int n2=0;n2<listas2.get(n1).getId().size();n2++){
-      if(listas2.get(n1).getId().get(n2)==max){
-        aceptacion=listas2.get(n1).getToken();
-      }
-      
+for(int n1=0;n1<listas2.size();n1++){
+  for(int n2=0;n2<listas2.get(n1).getId().size();n2++){
+    if(listas2.get(n1).getId().get(n2)==max){
+      aceptacion.addAll(listas2.get(n1).getList1().get(n2));
     }
+    
   }
+}
 
+int maxx = Collections.max(aceptacion);
+//System.out.println(aceptacion+"aceptacioooooooooooooooooooooooooooooooooooooon");
 /* 
 for(int ais=0; ais<listaaux.size();ais++){
   System.out.println("Siguiente: "+listaaux.get(ais).getList1());
@@ -277,7 +355,7 @@ for(int ais=0; ais<listaaux.size();ais++){
    
    
    
-                System.out.println("repetido");
+              //  System.out.println("repetido");
                  bandera_comprobante1=true;
              }
          }
@@ -287,16 +365,19 @@ for(int ais=0; ais<listaaux.size();ais++){
        for(int yyq=0; yyq<AFD.size();yyq++){
         // System.out.println(" ");
          if(listas2.get(j).getId().get(n)==AFD.get(yyq).getId()){
-           System.out.println("mismo id");
+          // System.out.println("mismo id");
 
 
-           if(listas2.get(j).getToken().equals(aceptacion)){
+         //  if(listas2.get(j).getToken().equals(aceptacion)){
+          int tas=max+1;
+          if(listas2.get(j).getList1().get(n).contains(tas)){
+          //  System.out.println(tas+"---"+estados_trans.get(i).getList1());
             AFD.add(new Nodo_AFD("S"+S_n,listas2.get(j).getToken(),listas2.get(j).getId().get(n),listas2.get(j).getList1().get(n),AFD.get(yyq).getS(),true));
            }
            else{
             AFD.add(new Nodo_AFD("S"+S_n,listas2.get(j).getToken(),listas2.get(j).getId().get(n),listas2.get(j).getList1().get(n),AFD.get(yyq).getS(),false));
            }
-        //   AFD.add(new Nodo_AFD("S"+S_n,listas2.get(j).getToken(),listas2.get(j).getId().get(n),listas2.get(j).getList1().get(n),AFD.get(yyq).getS(),false));
+        //aceptacion   AFD.add(new Nodo_AFD("S"+S_n,listas2.get(j).getToken(),listas2.get(j).getId().get(n),listas2.get(j).getList1().get(n),AFD.get(yyq).getS(),false));
            
            
            bandera_comprobante1=true;
@@ -308,9 +389,12 @@ for(int ais=0; ais<listaaux.size();ais++){
      //  System.out.println(S_n);
        for(int xx=0; xx<AFD.size();xx++){
          if(AFD.get(xx).getIds().equals(listas2.get(j).getList1().get(n))){
-           System.out.println("misma lista");
+        //   System.out.println("misma lista");
 
-            if(listas2.get(j).getToken().equals(aceptacion)){
+            //if(listas2.get(j).getToken().equals(aceptacion)){
+              int tas=max+1;
+              if(listas2.get(j).getList1().get(n).contains(tas)){
+          //      System.out.println(tas+"---"+estados_trans.get(i).getList1());
               AFD.add(new Nodo_AFD("S"+S_n,listas2.get(j).getToken(),listas2.get(j).getId().get(n),listas2.get(j).getList1().get(n),AFD.get(xx).getS(),true));
             }
             else{
@@ -342,7 +426,10 @@ for(int ais=0; ais<listaaux.size();ais++){
      if(repe==false){
        estados_trans.add(new Nodo_estados(listas2.get(j).getList1().get(n)));
      }
-     if(listas2.get(j).getToken().equals(aceptacion)){
+    // if(listas2.get(j).getToken().equals(aceptacion)){
+      int tas=max+1;
+      if(listas2.get(j).getList1().get(n).contains(tas)){
+     //   System.out.println(tas+"---"+estados_trans.get(i).getList1());
       AFD.add(new Nodo_AFD("S"+S_n,listas2.get(j).getToken(),listas2.get(j).getId().get(n),listas2.get(j).getList1().get(n),"S"+S_id,true));
      }else{
       AFD.add(new Nodo_AFD("S"+S_n,listas2.get(j).getToken(),listas2.get(j).getId().get(n),listas2.get(j).getList1().get(n),"S"+S_id,false));
@@ -389,6 +476,11 @@ System.out.println("---------------------------------------------------listas de
 
  */
 
+AFD2.add((AFD));
+Ventana_principal.listaJSON.add(new NodoJS(nio,AFD));
+
+
+ 
 int SS=0;
 //List<String> est= new ArrayList<>();
 complet2+="<TR>\n";
@@ -459,7 +551,7 @@ for(int ti=0; ti<AFD.size();ti++){
 
 
 
-        Tabla +="digraph {\n" 
+        Tabla +="digraph { label = \"Exp: "+nio+"\"  \n" 
          +"    node [ shape=none fontname=Helvetica ]\n" 
         +"     n4 [ label = <\n" 
              +"  <table border=\"4 \">\n" 
@@ -471,23 +563,120 @@ for(int ti=0; ti<AFD.size();ti++){
          +"  }\n";
 
 
-        graf_AFD="digraph G {label = \"AFD: EXPreg2\"\n"
+        graf_AFD="digraph G {label = \"AFD:"+nio+"\"\n"
         +"rankdir=\"LR\";\n"
         +"node [shape=\"circle\"];\n"
         +"SI[shape = none, fontcolor=\"white\"];\n"
         +complet3
         +"}\n";
 
+        AFND+="digraph G {label = \"AFND:"+nio+"\";\n"
+        +"rankdir=\"LR\";"
+        +"node [shape=\"circle\"]; "
+        +compew
+        +"S0;"
+        +"}";
+        System.out.println("---------------------------------------CAMBIO AFND-----------------------------");
+        System.out.println(AFND);
+        compew="";
+
 
          System.out.println("---------------------------------------CAMBIO Tabla-----------------------------");
-        System.out.println(Tabla);
+      //  System.out.println(Tabla);
+          File dotFile1 = new File("C:\\Users\\USER\\Desktop\\P1_OLC1_1S2023\\src\\GRAFICAS\\SIGUIENTES_202107190\\Tabla_siguientes_"+nio+".dot");
+        PrintWriter dotWriter1 = null;
+        try{
+            dotWriter1 = new PrintWriter(dotFile1);
+            dotWriter1.write(Tabla);
+            //dotWriter.close();
+          } catch (IOException ex) {
+            // Manejo de excepciones
+        } finally {
+            if (dotWriter1 != null) {
+                dotWriter1.close();
+            }
+        }
+
+        try {
+          String[] c1 = new String[5];
+          c1[0]="C:/Program Files/Graphviz/bin/dot.exe";
+          c1[1]="-Tpng";
+          c1[2]="C:/Users/USER/Desktop/P1_OLC1_1S2023/src/GRAFICAS/SIGUIENTES_202107190/Tabla_siguientes_"+nio+".dot";
+          c1[3]="-o";
+          c1[4]="C:/Users/USER/Desktop/P1_OLC1_1S2023/src/GRAFICAS/SIGUIENTES_202107190/Tabla_siguientes_"+nio+".png";
+      
+          Runtime p1 = Runtime.getRuntime();
+          p1.exec(c1);
+          System.out.println("Se genero el archivo");
+      } catch (Exception ex) {
+          ex.printStackTrace();
+      } 
+
         System.out.println("---------------------------------------CAMBIO Transiciones-----------------------------");
-        System.out.println(Transiciones);
+      //  System.out.println(Transiciones);
+      File dotFile11 = new File("C:\\Users\\USER\\Desktop\\P1_OLC1_1S2023\\src\\GRAFICAS\\TRANSICIONES_202107190\\Tabla_transiciones_"+nio+".dot");
+      PrintWriter dotWriter11 = null;
+      try{
+          dotWriter11 = new PrintWriter(dotFile11);
+          dotWriter11.write(Transiciones);
+          //dotWriter.close();
+        } catch (IOException ex) {
+          // Manejo de excepciones
+      } finally {
+          if (dotWriter11 != null) {
+              dotWriter11.close();
+          }
+      }
+
+      try {
+        String[] c11 = new String[5];
+        c11[0]="C:/Program Files/Graphviz/bin/dot.exe";
+        c11[1]="-Tpng";
+        c11[2]="C:/Users/USER/Desktop/P1_OLC1_1S2023/src/GRAFICAS/TRANSICIONES_202107190/Tabla_transiciones_"+nio+".dot";
+        c11[3]="-o";
+        c11[4]="C:/Users/USER/Desktop/P1_OLC1_1S2023/src/GRAFICAS/TRANSICIONES_202107190/Tabla_transiciones_"+nio+".png";
+    
+        Runtime p11 = Runtime.getRuntime();
+        p11.exec(c11);
+        System.out.println("Se genero el archivo");
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    } 
         System.out.println("---------------------------------------CAMBIO graf_AFD-----------------------------");
-        System.out.println(graf_AFD);
+        //System.out.println(graf_AFD);
+        File dotFile111 = new File("C:\\Users\\USER\\Desktop\\P1_OLC1_1S2023\\src\\GRAFICAS\\AFD_202107190\\AFD_"+nio+".dot");
+        PrintWriter dotWriter111 = null;
+        try{
+            dotWriter111 = new PrintWriter(dotFile111);
+            dotWriter111.write(graf_AFD);
+            //dotWriter.close();
+          } catch (IOException ex) {
+            // Manejo de excepciones
+        } finally {
+            if (dotWriter111 != null) {
+                dotWriter111.close();
+            }
+        }
+  
+        try {
+          String[] c111 = new String[5];
+          c111[0]="C:/Program Files/Graphviz/bin/dot.exe";
+          c111[1]="-Tpng";
+          c111[2]="C:/Users/USER/Desktop/P1_OLC1_1S2023/src/GRAFICAS/AFD_202107190/AFD_"+nio+".dot";
+          c111[3]="-o";
+          c111[4]="C:/Users/USER/Desktop/P1_OLC1_1S2023/src/GRAFICAS/AFD_202107190/AFD_"+nio+".png";
+      
+          Runtime p111 = Runtime.getRuntime();
+          p111.exec(c111);
+          System.out.println("Se genero el archivo");
+      } catch (Exception ex) {
+          ex.printStackTrace();
+      } 
 
 
 
+
+    
     estados_trans.clear();
     AFD.clear();
 
@@ -498,6 +687,7 @@ listaaux.clear();
         Tabla="";
         Transiciones="";
         graf_AFD="";
+     //   instancia.variable1++;
     }
 
 public void asignar_id(Nodo nodo){
@@ -528,13 +718,11 @@ public void asignar_id(Nodo nodo){
         metodoArbol(actual.getHijoIzq());
         metodoArbol(actual.getHijoDer());
 
-        //aqui la tabla |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
         if (actual.getToken().equals("*")){
             actual.setAnulable(true);
             
             actual.getPrimero().addAll(actual.getHijoIzq().getPrimero());
             actual.getUltimo().addAll(actual.getHijoIzq().getUltimo());
-//--------            complet+="<tr><td bgcolor=\"yellow\"> "+actual.getHijoIzq().getToken()+" </td><td bgcolor=\"#77ff33\">"+actual.getHijoIzq().getUltimo()+" </td><td bgcolor=\"orange\">"+actual.getHijoDer().getPrimero()+" </td></tr>\n";
             listas.add(new Nodo_siguientes(actual.getHijoIzq().getUltimo(),actual.getHijoIzq().getPrimero()));
 
             // System.out.println("******************************"+actual.getHijoIzq().getToken()+" . "+actual.getHijoIzq().getUltimo()+" . "+actual.getHijoDer());
@@ -584,13 +772,16 @@ public void asignar_id(Nodo nodo){
 
         }
     //    else if (actual.getToken().equals("#")){
-      //      actual.setAnulable(false);
+      //      actual.setAnulable(false);complew
         //}
 
 
 
     }
  
+
+
+
     public String Arobol_grafica(Nodo nodo, int n){
         String cadena = "";
         num+=1;
@@ -623,6 +814,8 @@ public void asignar_id(Nodo nodo){
           + " </TABLE>> \n"
           + "   ]\n";
           listaH.add(nodoTerm);
+
+
         }
         else{
             String nodoTerm = nodo.getToken().replace("\"", "");
@@ -654,6 +847,7 @@ public void asignar_id(Nodo nodo){
         }
         cadena += Arobol_grafica(nodo.getHijoIzq(), actual);
         cadena += Arobol_grafica(nodo.getHijoDer(), actual);
+
         return cadena;
         
     }
@@ -662,25 +856,37 @@ public void asignar_id(Nodo nodo){
 
 
 
-    public boolean prueba1(int i,int j, int S_n){
-      for(int k=0; k<AFD.size();k++){
-        if(AFD.get(k).getS_ant().contains("S"+S_n)){
-          //  bandera_comprobante1=true;
-            if(AFD.get(k).getTokens().contains(listas2.get(j).getToken())){
-                for(int b=0;b<listaaux.get(i).getList1().size();b++){
-                  System.out.println(" ");
-                    if(!AFD.get(k).getIds().contains(listaaux.get(i).getList1().get(b))){
-                        AFD.get(k).getIds().add(listaaux.get(i).getList1().get(b));
-                    }
-                }
-                return true;
-            }
-        }
+private void escribirArchivo(String ruta, String contenido){
+  FileWriter fichero = null;
+  PrintWriter pw = null;
+  try{
+    fichero=new FileWriter(ruta);
+    pw=new PrintWriter(fichero);
+    pw.write(contenido);
+    pw.close();
+    fichero.close();
+  }catch(Exception e){
+    System.out.println(e.getLocalizedMessage());
+  }finally{
+    if(pw!=null){
+      pw.close();
       }
-      return false;
+  }
+
+
+}
+    
+    public void dibujarGraphviz(String graphviz){
+      try{
+escribirArchivo("C:\\Users\\Usuario\\Desktop\\Proyecto1\\src\\Arbol\\Arbol_Sintactico.dot",graphviz);
+ProcessBuilder proceso;
+proceso = new ProcessBuilder("dot","-Tpng","-o","C:\\Users\\Usuario\\Desktop\\Proyecto1\\src\\Arbol\\Arbol_Sintactico.png","C:\\Users\\Usuario\\Desktop\\Proyecto1\\src\\Arbol\\Arbol_Sintactico.dot");
+proceso.redirectErrorStream(true);
+proceso.start();     
+}catch(Exception e){
+        e.printStackTrace();
+      }
     }
-    
-    
 
 
 }
