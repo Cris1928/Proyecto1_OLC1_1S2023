@@ -62,7 +62,7 @@ n4[
    <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
   [1]
  </TD> 
-  <TD BGCOLOR="white"  BORDER="4">nuevo</TD> 
+  <TD BGCOLOR="white"  BORDER="4">letra</TD> 
  </TR>
  <TR>
   <TD COLSPAN="2" ALIGN="right" PORT="there"  BGCOLOR="Green">1</TD>
@@ -119,7 +119,7 @@ n7[
    <TD COLSPAN="2" ROWSPAN="2"  BGCOLOR="#3690c0">
   [3]
  </TD> 
-  <TD BGCOLOR="white"  BORDER="4">nuevo</TD> 
+  <TD BGCOLOR="white"  BORDER="4">nums</TD> 
  </TR>
  <TR>
   <TD COLSPAN="2" ALIGN="right" PORT="there"  BGCOLOR="Green">3</TD>

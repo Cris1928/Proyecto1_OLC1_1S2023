@@ -5,7 +5,7 @@ SI[shape = none, fontcolor="white"];
 S1[shape="doublecircle"];
 S1[shape="doublecircle"];
 S1[shape="doublecircle"];
-S0->S1[label="nuevo"];
+S0->S1[label="letra"];
 S0->S1[label="2"];
-S1->S1[label="nuevo"];
+S1->S1[label="nums"];
 }
