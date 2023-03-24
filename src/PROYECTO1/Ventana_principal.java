@@ -44,6 +44,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author USER
  */
 public class Ventana_principal extends javax.swing.JFrame {
+    File open_file =null;
     File ArchivoActual=null;
     File archivo;
     JFileChooser seleccionar=new JFileChooser();
@@ -236,43 +237,44 @@ jTextArea1.setText(content);
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        // boton guardar
-        File archivo = new File(jTextArea1.getText());
+        File file =ArchivoActual;
+        String texto = jTextArea1.getText();
+        try(PrintWriter out = new PrintWriter(file, StandardCharsets.UTF_8)) {
+            out.println(texto);
+            System.out.println("Se escribio correctamente");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
        
-            try{
-               PrintWriter salida = new PrintWriter(archivo);
-               salida.println(jTextArea1.getText());
-               salida.close();
-
-            }catch (FileNotFoundException ex){
-               ex.printStackTrace(System.out);
-            }
-        
-
-
-
-
-
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-         JFileChooser jfc = new JFileChooser();
-        jfc.setCurrentDirectory(new File(System.getProperty("user.dir")));
-        jfc.setFileFilter(new FileNameExtensionFilter("OLC Files", "olc"));
-        int result = jfc.showOpenDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION){
+        
+        
+      
+          JFileChooser fileChooser =new JFileChooser();
+           fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("OLC Files", "olc"));
+        int seleccion = fileChooser.showOpenDialog(jTextArea1);
+        if (seleccion == JFileChooser.APPROVE_OPTION){
+            String contenido = "";
+            ArchivoActual = fileChooser.getSelectedFile();
             try {
-                String canonical = jfc.getSelectedFile().getCanonicalPath();
-                String content = Files.readString(Path.of(canonical));
-                jTextArea1.selectAll();
-                jTextArea1.replaceSelection("");
-                jTextArea1.insert(content, 0);
-              
-            } catch (IOException ex) {
-                Logger.getLogger(Ventana_principal.class.getName()).log(Level.SEVERE, null, ex);
+                Scanner input = new Scanner(ArchivoActual);
+                while (input.hasNextLine()){
+                    contenido += input.nextLine() + "\n";
             }
+            input.close();
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
+        jTextArea1.setText(contenido);
+        }
+
+        
+        
+        
         
         
         
